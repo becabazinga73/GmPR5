@@ -1,0 +1,11 @@
+use Dicosts 5.0
+
+blast with Workbench, to discover pr-5 gene family, using cucumis melo genes as query
+
+
+
+1- go to "Analyze", click on Interactive Plylogenetics Moedule"
+2- select the gene family and paste "HOM05D000102"
+3- In the "Species selection" tab, check glycine max.
+4- In "MSA algorithm", select MAFFT and click "creat MSA\tree". this will generate the and the phylogenetic tree from the
+5- On the files tab, under "Results", select View Multi-Sequence Alignment. you have the option to see the edited (always few preserved) and unedited.
