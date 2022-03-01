@@ -38,7 +38,7 @@ msaPrettyPrint(mafft_msa_complete, y=c(229, 385),
                file=here("products", "plots", "msa_mafft_complete.pdf"), 
                output="pdf",
                paperWidth = 10,
-               showNames="left", showLogo = "none",
+               showNames="left", showLogo = "none", showConsensus = "none"
                shadingMode="similar",
                showLegend=TRUE, askForOverwrite=FALSE,
                furtherCode="\\showruler{1}{top}",
