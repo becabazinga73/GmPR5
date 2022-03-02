@@ -34,7 +34,7 @@ id_df <- data.frame(id = rownames(mafft_complete)) %>%
   mutate(name = ids$Gene_name[ids$Gene_ID %in% id])
 rownames(mafft_complete) <- id_df$name
 mafft_msa_complete <- as(mafft_complete, "MsaAAMultipleAlignment")
-msaPrettyPrint(mafft_msa_complete, y=c(229, 385),
+msaPrettyPrint(mafft_msa_complete, y=c(1, 316),
                file=here("products", "plots", "msa_mafft_complete.pdf"), 
                output="pdf",
                paperWidth = 10,
