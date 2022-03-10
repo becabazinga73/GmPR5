@@ -9,3 +9,12 @@ blast with Workbench, to discover pr-5 gene family, using cucumis melo genes as 
 3- In the "Species selection" tab, check glycine max.
 4- In "MSA algorithm", select MAFFT and click "creat MSA\tree". this will generate the and the phylogenetic tree from the
 5- On the files tab, under "Results", select View Multi-Sequence Alignment. you have the option to see the edited (always few preserved) and unedited.
+
+## GmPR-1 gene identification
+
+**Uniprot search**: name:"pathogenesis-related protein 1" AND reviewed:yes AND organism:"Arabidopsis thaliana (Mouse-ear cress) [3702]"
+*Results*: P28493 (At1g75040), A0A178WNL8 (AXX17_At1g69430).
+
+**Protein domains** associated with this family: PF00314 (PFAM) and SM00205 (SMART).
+
+**Step 1** of the pipeline.
