@@ -28,7 +28,13 @@ names(proteome) <- sapply(strsplit(names(proteome), " | "), tail, 1)
 
 ```
 
-## GmPR-1 gene identification
+# Load gene annotation
+plaza_annotation_interpro <- read.delim2(paste0(data_dir,"interpro.gma.csv.gz"), skip = 8, col.names = c("Gene_ID", "Species", "Motif_ID", "Description", "Start", "Stop", "Score", "Comment"), sep = "\t")
+plaza_annotation <- as.data.frame(plaza_annotation)
+head(plaza_annotation)
+names(plaza_annotation)
+
+## GmPR-5 gene identification
 
 **Uniprot search**: name:"pathogenesis-related protein 5" AND reviewed:yes AND organism:"Arabidopsis thaliana (Mouse-ear cress) [3702]"
 *Results*: 	P28493 (At1g75040)
@@ -73,7 +79,7 @@ length(pr5_putative_s1)
 
 ```{r}
 pr5_putative_s2 <- find_domains(ids=pr5_putative_s1, 
-                                annotation=biomart_annotation,
+                                annotation=plaza_annotation_interpro,
                                 pfam="PF00188", smart="SM000198")
 nrow(pr1_putative_s2)
 ```
