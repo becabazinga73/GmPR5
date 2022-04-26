@@ -30,9 +30,9 @@ names(proteome) <- sapply(strsplit(names(proteome), " | "), tail, 1)
 
 # Load gene annotation
 plaza_annotation_interpro <- read.delim2(paste0(data_dir,"interpro.gma.csv.gz"), skip = 8, col.names = c("Gene_ID", "Species", "Motif_ID", "Description", "Start", "Stop", "Score", "Comment"), sep = "\t")
-plaza_annotation <- as.data.frame(plaza_annotation)
-head(plaza_annotation)
-names(plaza_annotation)
+plaza_annotation <- as.data.frame(plaza_annotation_interpro)
+head(plaza_annotation_interpro)
+names(plaza_annotation_interpro)
 
 ## GmPR-5 gene identification
 
