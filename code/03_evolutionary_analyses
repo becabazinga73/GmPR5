@@ -1,0 +1,90 @@
+## Phylogenetic reconstruction of PR-1 genes across species
+
+```{r}
+set.seed(123) # for reproducibility
+library(here)
+```
+
+```{r}
+library(tidyverse)
+ids <- read.csv(here("products", "tables", "table1.txt"))[, c(1,2)]
+ids <- ids %>%
+  mutate(name = paste0(Gene_name, Gene_ID)) %>%
+  mutate(name = str_replace(name, "Glyma\\.", "|"))
+```
+
+
+Sequences were aligned with MAFFT in PLAZA's Interactive Phylogenetic Module. Inferring the phylogeny with IQTREE2:
+
+```{bash}
+# Bash
+mkdir -p ../products/result_files/cross_species_phylotree
+cd ../products/result_files/cross_species_phylotree
+iqtree -s ../cross_species_muscle.fasta -B 1000 --prefix cross_species
+```
+
+```{r}
+library(ggtree)
+library(ggplot2)
+tree <- treeio::read.newick(
+    here("products", "result_files", 
+         "cross_species_phylotree", "cross_species.treefile")
+    ) 
+ggtree(tree, layout = "circular", open.angle = 10) + 
+    geom_text2(aes(subset=!isTip, label=node), hjust=-.9, check_overlap = TRUE) + 
+    geom_tiplab(align = TRUE)
+
+# Create groups to annotate tree
+groupInfo <- c(Cluster1 = 120, 
+               Cluster2 = 131, 
+               Cluster3 = 133,
+               Cluster4 = 162,
+               Cluster5 = 184,
+               Cluster6 = 192,
+               Cluster7 = 199,
+               Cluster8 = 208,
+               Cluster9 = 216)
+tree <- groupClade(tree, groupInfo)
+# Change names to plot
+tree$tip.label[tree$tip.label %in% ids$Gene_ID] <- ids$Gene_name[ids$Gene_ID %in% tree$tip.label]
+# Create species legend
+species <- data.frame(label=tree$tip.label,
+                      stringsAsFactors = FALSE)
+species$species <- apply(species, 1, function(x) {
+  if(startsWith(x, "AT")) {
+    y <- "A. thaliana"
+  } else if(startsWith(x, "Gm")) {
+    y <- "G. max"
+    } else {
+      y <- "V. mungo"
+      }
+  return(y)
+})
+# Plot circular tree
+phylotree <- ggtree(tree, aes(color=group), open.angle = 10,
+                    layout="circular") %<+% species + 
+  geom_tiplab(align = TRUE, size=3, offset=0.1) +
+  geom_text2(aes(label=label, 
+                 subset = as.numeric(label) > 80, color=group),            
+             size=1.8, hjust = -0.2, vjust = -0.2) +
+  scale_color_manual(name="Group",
+                     breaks = c("Cluster1", "Cluster2", "Cluster3", "Cluster4", "Cluster5", "Cluster6", "Cluster7", "Cluster8", "Cluster9"),
+                     values = c("black", "steelblue", "darkgreen", "brown2", "coral3", "darkorange", "chocolate4", "darkred", "aquamarine4", "darkorchid")) +
+  guides(line="none") +
+  ggnewscale::new_scale_color() +
+  geom_tippoint(aes(color=species), show.legend = TRUE, size = 1) +
+  scale_color_manual(name="Species", 
+                     values = c("#8B0000", "#483D8B", "#8B636C")) +
+  theme_tree() +
+  xlim(0, NA) +
+  theme(
+    plot.margin=margin(2, 2, 2, -1,"cm"),
+    legend.position=c(1.28, 0.5), # the position of legend.
+    legend.background=element_rect(fill=NA), # the background of legend.
+    legend.title=element_text(size=11), # the title size of legend.
+    legend.text=element_text(size=9) # the text size of legend.
+    )
+phylotree
+ggsave(plot=phylotree, 
+       filename = here("products", "plots", "cross_species_tree.pdf"), 
+       width = 9, height = 6)
