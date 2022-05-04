@@ -87,4 +87,4 @@ phylotree <- ggtree(tree, aes(color=group), open.angle = 10,
 phylotree
 ggsave(plot=phylotree, 
        filename = here("products", "plots", "cross_species_tree.pdf"), 
-       width = 10, height = 7)
+       width = 11, height = 6)
