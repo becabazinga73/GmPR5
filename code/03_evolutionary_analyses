@@ -72,9 +72,9 @@ phylotree <- ggtree(tree, aes(color=group), open.angle = 10,
                      values = c("black", "steelblue", "darkgreen", "brown2", "coral3", "darkorange", "chocolate4", "darkred", "aquamarine4", "darkorchid")) +
   guides(line="none") +
   ggnewscale::new_scale_color() +
-  geom_tippoint(aes(color=species), show.legend = TRUE, size = 1) +
+  geom_tippoint(aes(color=species), show.legend = TRUE, size = 0.5) +
   scale_color_manual(name="Species", 
-                     values = c("#8B0000", "#483D8B", "#8B636C")) +
+                     values = c("#800000FF", "#767676FF", "#FFA319FF")) +
   theme_tree() +
   xlim(0, NA) +
   theme(
@@ -87,4 +87,4 @@ phylotree <- ggtree(tree, aes(color=group), open.angle = 10,
 phylotree
 ggsave(plot=phylotree, 
        filename = here("products", "plots", "cross_species_tree.pdf"), 
-       width = 9, height = 6)
+       width = 10, height = 7)
