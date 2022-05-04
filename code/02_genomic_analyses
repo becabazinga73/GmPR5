@@ -1,0 +1,26 @@
+library(tidyverse)
+ids <- read.csv(here("products", "tables", "table1.txt"))[, c(1,2)]
+ids <- ids %>%
+  mutate(name = paste0(Gene_name, Gene_ID)) %>%
+  mutate(name = str_replace(name, "Glyma\\.", "|"))
+```
+
+```{r read_mafft}
+library(msa)
+library(tidyverse)
+mafft_complete <- Biostrings::readAAMultipleAlignment(
+  here("products", "result_files", "mafft", "mafft_unedited.fasta")
+)
+id_df <- data.frame(id = rownames(mafft_complete)) %>%
+  mutate(name = ids$Gene_name[ids$Gene_ID %in% id])
+rownames(mafft_complete) <- id_df$name
+mafft_msa_complete <- as(mafft_complete, "MsaAAMultipleAlignment")
+msaPrettyPrint(mafft_msa_complete, y=c(1, 243),
+               file=here("products", "plots", "msa_mafft_complete.pdf"), 
+               output="pdf",
+               paperWidth = 10,
+               showNames="left", showLogo = "none", showConsensus = "none"
+               shadingMode="similar",
+               showLegend=TRUE, askForOverwrite=FALSE,
+               furtherCode="\\showruler{1}{top}",
+               consensusThreshold = 80)
