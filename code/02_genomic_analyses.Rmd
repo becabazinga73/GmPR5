@@ -1,0 +1,76 @@
+---
+title: "Genomic analyses of GmTLP genes in soybean"
+author: "Rebeca de Souza Brinco"
+date: "5/5/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```
+
+## Multiple sequence alignment
+
+Visualizing alignment with MAFFT. The sequences were aligned the MAFFT algorithm in the PLAZA's Interactive Phylogenetic Module.
+
+
+```{r}
+library(here)
+
+# Load table of correspondence between Glyma IDs and GmTLP
+
+ids <- read.csv(here("products", "tables", "table1.txt"), header=TRUE)
+head(ids)
+```
+
+
+```{r}
+library(msa)
+library(tidyverse)
+mafft_complete <- Biostrings::readAAMultipleAlignment(
+  here("products", "result_files", "mafft", "mafft_unedited.fasta")
+)
+id_df <- data.frame(id = rownames(mafft_complete)) %>%
+  mutate(name = ids$Gene_name[ids$Gene_ID %in% id])
+rownames(mafft_complete) <- id_df$name
+
+mafft_msa_complete <- as(mafft_complete, "MsaAAMultipleAlignment")
+msaPrettyPrint(mafft_msa_complete, y=c(1, 316),
+               file=here("products", "plots", "msa_mafft_complete.pdf"), 
+               output="pdf",
+               paperWidth = 10,
+               showNames="left", showLogo = "none", showConsensus = "none",
+               shadingMode="similar",
+               showLegend=TRUE, askForOverwrite=FALSE,
+               furtherCode="\\showruler{1}{top}",
+               consensusThreshold = 80)
+```
+
+
+
+```{r}
+seqs_pr5 <- Biostrings::readAAStringSet(
+  here("products", "result_files", "pr5_nostopcodon.fa")
+)
+```
+
+
+```{r}
+# Export alignment as a FASTA file with C. cajan PR-1 as outgroup
+outgroup <- Biostrings::readAAStringSet(here(
+  "products", "result_files", "outgroup_PR5.fa")
+  )
+names(outgroup) <- "Vmungo"
+tree_alignment <- c(outgroup, seqs_pr5)
+pr5_alignment <- msaMuscle(tree_alignment)
+pr5.expaln <- as(pr5_alignment, "MultipleAlignment")
+Biostrings::write.phylip(
+  pr5.expaln, 
+  filepath=here("products", "result_files",
+                "pr5_alignment_with_outgroup.phylip")
+  )
+```
+
