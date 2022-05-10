@@ -1,0 +1,143 @@
+title: "Genomic and structural properties of GmTLPs genes"
+author: "Rebeca de Souza Brinco"
+date: "09/05/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Chromosomal distribution
+
+```{r}
+library(here)
+library(tidyverse)
+seqs_pr5 <- Biostrings::readAAStringSet(
+    here("products", "result_files", "pr5_nostopcodon.fa")
+)
+genes_and_chrom <- data.frame(Gene=sort(names(seqs_pr5)), 
+                              Chr=sort(names(seqs_pr5))) %>%
+  mutate(Chr = str_replace(Chr, "Glyma\\.", "")) %>%
+  mutate(Chr = str_replace(Chr, "G.*", "")) %>%
+  janitor::tabyl(Chr) %>%
+  arrange(-n)
+genes_and_chrom
+```
+
+
+
+## GO annotation
+
+Here, we will download GO annotation from PLAZA to see which GO terms are attributed to GmTLPs genes.
+
+
+```{r}
+
+```
+
+## Structural analysis
+
+```{r}
+
+```
+
+
+### Physicochemical properties of PR-5
+
+```{r}
+library(Peptides)
+seqs_pr5 <- seqs_pr5[sort(names(seqs_pr5))]
+pi <- pI(as.character(seqs_pr5))
+mw <- mw(as.character(seqs_pr5)) / 1000
+hydrophibicity <- hydrophobicity(as.character(seqs_pr5))
+```
+
+### Subcellular localization and signal peptide
+
+The presence/absence of signal peptides was analyzed with SignalP 5.0 (http://www.cbs.dtu.dk/services/SignalP/) and the prediction summary was downloaded for analysis in R.
+
+```{r}
+#----Signal peptide analysis----
+signalp <- read.csv(
+    here("products", "result_files", "SignalP5.0", "PR5_signalp5.0.txt"), 
+    header=TRUE, sep="\t", skip=1
+    )
+# Create a table containing cleavavge sites of signal peptides
+sptable <- signalp
+sptable$SP <- sapply(strsplit(sptable$CS.Position, ": "), `[`, 2)
+sptable <- sptable[, c(1, 6)]
+sptable$SP <- gsub("\\..*", "", sptable$SP)
+names(sptable) <- c("Gene_ID", "SP")
+sptable <- sptable[order(sptable$Gene_ID), ]
+head(sptable)
+
+
+#----Subcellular localization analysis----
+# Load Soybase annotation
+load(here("data", "soybase_annotation_tidy.rda"))
+cc <- soybase_annotation
+cc <- cc %>% 
+  filter(Gene %in% names(seqs_pr5)) %>%
+  select(Gene, gocc_des) %>%
+  distinct() %>%
+  arrange(Gene) %>%
+  mutate(gocc_des = str_replace(gocc_des, "extracellular region", "Apoplast")) %>%
+  as.data.frame()
+```
+
+
+### Genomic properties of PR-5
+
+
+```{r}
+
+library(GenomicRanges)
+library(gggenes)
+gff <- rtracklayer::import(here("data", "PLAZA_selected.transcripts.gff.gz"))
+seqs_pr5 <- Biostrings::readAAStringSet(
+  here("products", "result_files", "pr5_nostopcodon.fa")
+)
+
+# Exons
+gene.str.exons <- as.data.frame(gff[gff$type == "exon" & gff$gene_id %in% names(seqs_pr5)])
+gene.str.exons$ID <- gsub(".*exon:", "", gene.str.exons$ID)
+gene.str.exonlist <- split(gene.str.exons, gene.str.exons$Name)
+gene.str.exons <- Reduce(rbind, lapply(gene.str.exonlist, function(x) {
+  start <- x[1,2] - 1
+  x$start <- x$start - start
+  x$end <- x$end - start
+  return(x)
+}))
+```
+
+
+```{r}
+# Stats
+exon_no <- unlist(lapply(gene.str.exonlist, nrow))
+seqlength <- width(seqs_pr5)
+```
+
+Summarizing it all in a table.
+
+
+```{r}
+table1 <- data.frame("Gene_ID" = names(seqs_pr5),
+                     "Gene_name" = paste0("GmTLP", 1:length(seqs_pr5)),
+                     "Exon_no" = exon_no,
+                     "Protein length (aa)" = seqlength,
+                     "pI" = signif(pi, 2),
+                     "MW (kDa)" = round(mw),
+                     "Hydrophobicity" = signif(hydrophibicity, 2),
+                     "SL" = "Apoplast",
+                     "SP" = sptable$SP,
+                     stringsAsFactors=FALSE)
+table1 <- merge(table1, second.structure, by.x="Gene_ID", by.y="Genes")
+table1
+write.table(
+    table1, 
+    file=here("products", "tables", "table1.txt"), 
+    sep=",", quote=FALSE, row.names=FALSE
+    )
+```
