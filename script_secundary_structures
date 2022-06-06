@@ -1,0 +1,7 @@
+foram baixados os arquivos pdb no Alphafold na sessao compressed prediction files model organism proteomes, e identificados os IDs de cada gene TLP de soja, com base no UniProt. Com isso, os arquivos pdb correspondentes foram extraídos:
+Os genes Glyma.10G061700 e Glyma.10G060300 possuem o mesmo ID:	I1L923 (arquivo pdb: AF-I1L923-F1-model_v2.pdb.gz)
+O gene Glyma.14G077267 nao tem no uniprot, portante vai se rprecisa fazer a modelagem pelo pyre2
+O gene Glyma.14G077333 tem a mesma sequencia que o gene de ID: K7M5H5. Portanto tem o mesmo arquivo pdb: AF-K7M5H5-F1-model_v2.pdb.gz
+
+
+o gene Glyma_14G077267 nao tem no unipro, portanto foi feito a modelagem no phyre2 usando o One to One threading. Nesse metodo foi fornecido o arquivo pdb de  K7M5H5, como molde para modelagem e a sequecia de aminoacidos da proteina de Glyma_14G077267.
