@@ -125,3 +125,5 @@ This report was created under the following conditions:
 ```{r}
 sessionInfo()
 ```
+
+The gene Glyma.15G258400 were deleted of pr5_bostopcodon.fa for posterior analyses. 
