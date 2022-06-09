@@ -1,0 +1,79 @@
+----title: "blast_all_against_all"
+author: "Rebeca de Souza Brinco"
+date: "20/05/2022"
+output: html_document
+---
+
+
+
+
+```{r}
+library(rBLAST)
+source(here::here("code", "functions.R"))
+```
+
+```{r}
+library(here)
+library(tidyverse)
+seq_pr5<- Biostrings::readAAStringSet(
+    here("products", "result_files", "pr5_nostopcodon.fa"))
+```
+
+# Blast with select TLPs
+```{r}
+blast_pr5 <- blast_search(query = seq_pr5, db=seq_pr5, BLAST_args = "-evalue 1e-10")
+head(blast_pr5)
+dim(blast_pr5)
+```
+
+
+# Create matrix
+```{r}
+matrix1 <- blast_pr5 %>%
+  pivot_wider(names_from = SubjectID, values_from = Perc.Ident)
+
+library(dplyr)
+matrix2 <- matrix1 %>%
+  group_by(QueryID) %>%
+  summarise_all(sum, na.rm = TRUE) %>%
+  select(-Alignment.Length, -Mismatches, -Gap.Openings, -Q.start, -Q.end, -S.start, -S.end, -E, -Bits)
+
+matrix3 <- matrix2 %>%
+  select(-QueryID, )
+matrix3 <- matrix3[, c("Glyma.01G165400", "Glyma.01G165600", "Glyma.01G165800", "Glyma.01G217600", "Glyma.01G217700", "Glyma.02G047400", "Glyma.02G220900", "Glyma.02G249500", "Glyma.04G023700", "Glyma.04G034300", "Glyma.04G176200", "Glyma.04G225800", "Glyma.05G169700", "Glyma.05G204600", "Glyma.05G204800", "Glyma.05G245800", "Glyma.06G023900", "Glyma.06G139000", "Glyma.06G189100", "Glyma.07G135100", "Glyma.08G053600", "Glyma.08G128000", "Glyma.08G172700", "Glyma.09G003600", "Glyma.10G060300", "Glyma.10G060800", "Glyma.10G061000", "Glyma.10G061700", "Glyma.10G061800", "Glyma.10G062100", "Glyma.11G025600", "Glyma.11G077700", "Glyma.11G077800", "Glyma.11G106100", "Glyma.11G106200", "Glyma.11G140800", "Glyma.11G220700", "Glyma.12G031000", "Glyma.12G031200", "Glyma.12G064300", "Glyma.12G238900", "Glyma.13G082700", "Glyma.14G077267", "Glyma.14G077333", "Glyma.14G077400", "Glyma.14G163700", "Glyma.14G188400", "Glyma.14G219600", "Glyma.15G254700", "Glyma.16G126900", "Glyma.16G127100", "Glyma.17G248300", "Glyma.17G258500", "Glyma.17G258600", "Glyma.19G018400")]
+row.names(matrix3) <- c("Glyma.01G165400", "Glyma.01G165600", "Glyma.01G165800", "Glyma.01G217600", "Glyma.01G217700", "Glyma.02G047400", "Glyma.02G220900", "Glyma.02G249500", "Glyma.04G023700", "Glyma.04G034300", "Glyma.04G176200", "Glyma.04G225800", "Glyma.05G169700", "Glyma.05G204600", "Glyma.05G204800", "Glyma.05G245800", "Glyma.06G023900", "Glyma.06G139000", "Glyma.06G189100", "Glyma.07G135100", "Glyma.08G053600", "Glyma.08G128000", "Glyma.08G172700", "Glyma.09G003600", "Glyma.10G060300", "Glyma.10G060800", "Glyma.10G061000", "Glyma.10G061700", "Glyma.10G061800", "Glyma.10G062100", "Glyma.11G025600", "Glyma.11G077700", "Glyma.11G077800", "Glyma.11G106100", "Glyma.11G106200", "Glyma.11G140800", "Glyma.11G220700", "Glyma.12G031000", "Glyma.12G031200", "Glyma.12G064300", "Glyma.12G238900", "Glyma.13G082700", "Glyma.14G077267", "Glyma.14G077333", "Glyma.14G077400", "Glyma.14G163700", "Glyma.14G188400", "Glyma.14G219600", "Glyma.15G254700", "Glyma.16G126900", "Glyma.16G127100", "Glyma.17G248300", "Glyma.17G258500", "Glyma.17G258600", "Glyma.19G018400")
+```
+
+
+# Plot heatmap
+```{r}
+library(tiff)
+png(file = "/home/rebeca/Área-de-Trabalho/Projeto-PR-5/heatmap.png", width = 1400, height = 1400)
+heatmap3::heatmap3(matrix3, margins = c(9, 9), col = cm.colors(256), scale = "none", cexRow = 1, cexCol = 1)
+dev.off()
+```
+
+# matrix RMSD
+```{r}
+library(bio3d)
+library(tidyverse)
+pdblist <- list(read.pdb("pdbs/AF-A0A0R0ITR8-F1-model_v2_P23_Glyma.08G172700_GmTLP23.pdb"), read.pdb("pdbs/AF-A0A0R0JGL8-F1-model_v2_P18_Glyma.06G139000_GmTLP18.pdb"), read.pdb("pdbs/AF-A0A0R0LK16-F1-model_v2_P4_Glyma.01G217600_GmTLP4.pdb"), read.pdb("pdbs/AF-A0A0R0LK39-F1-model_v2_P5_Glyma.01G217700_GmTLP5.pdb"), read.pdb("pdbs/AF-C6TDE4-F1-model_v2_P31_Glyma.11G025600_GmTLP31.pdb"), read.pdb("pdbs/AF-C6TGI5-F1-model_v2_P20_Glyma.07G135100_GmTLP20.pdb"), read.pdb("pdbs/AF-I1J8K6-F1-model_v2_P1_Glyma.01G165400_GmTLP1.pdb"), read.pdb("pdbs/AF-I1J8K7-F1-model_v2_P2_Glyma.01G165600_GmTLP2.pdb"), read.pdb("pdbs/AF-I1JCG6-F1-model_v2_P6_Glyma.02G047400_GmTLP6.pdb"), read.pdb("pdbs/AF-I1JI08-F1-model_v2_P8_Glyma.02G249500_GmTLP8.pdb"), read.pdb("pdbs/AF-I1JT26-F1-model_v2_P9_Glyma.04G023700_GmTLP9.pdb"), read.pdb("pdbs/AF-I1K5C5-F1-model_v2_P16_Glyma.05G245800_GmTLP16.pdb"), read.pdb("pdbs/AF-I1K6M2-F1-model_v2_P15_Glyma.05G204800_GmTLP15.pdb"), read.pdb("pdbs/AF-I1K6M9-F1-model_v2_P14_Glyma.05G204600_GmTLP14.pdb"), read.pdb("pdbs/AF-I1KCN4-F1-model_v2_P19_Glyma.06G189100_GmTLP19.pdb"), read.pdb("pdbs/AF-I1KQK1-F1-model_v2_P21_Glyma.08G053600_GmTLP21.pdb"), read.pdb("pdbs/AF-I1L923-F1-model_v2_P25_Glyma.10G060300_GmTLP25.pdb"), read.pdb("pdbs/AF-I1L923-F1-model_v2_P28_Glyma.10G061700_TLP28.pdb"), read.pdb("pdbs/AF-I1L925-F1-model_v2_P26_.Glyma.10G060800_GmTLP26.pdb"), read.pdb("pdbs/AF-I1L927-F1-model_v2_P27_Glyma.10G061000_GmTLP27.pdb"), read.pdb("pdbs/AF-I1L930-F1-model_v2_P29_Glyma.10G061800_GmTLP29.pdb"), read.pdb("pdbs/AF-I1LI21-F1-model_v2_P32_Glyma.11G077700_GmTLP32.pdb"), read.pdb("pdbs/AF-I1LI22-F1-model_v2_P33_Glyma.11G077800_GmTLP33.pdb"), read.pdb("pdbs/AF-I1LK37-F1-model_v2_P36_Glyma.11G140800_GmTLP36.pdb"), read.pdb("pdbs/AF-I1LPR0-F1-model_v2_P39_Glyma.12G031200_GmTLP39.pdb"), read.pdb("pdbs/AF-I1LQR8-F1-model_v2_P40_Glyma.12G064300_GmTLP40.pdb"), read.pdb("pdbs/AF-I1M8G0-F1-model_v2_P45_Glyma.14G077400_GmTLP45.pdb"), read.pdb("pdbs/AF-I1MJ61-F1-model_v2_P49_Glyma.15G254700_GmTLP49.pdb"), read.pdb("pdbs/AF-I1MN46-F1-model_v2_P51_Glyma.16G126900_GmTLP50.pdb"), read.pdb("pdbs/AF-I1MXU2-F1-model_v2_P53_Glyma.17G248300_GmTLP52.pdb"), read.pdb("pdbs/AF-I1MY36-F1-model_v2_P54_Glyma.17G258500_GmTLP53.pdb"), read.pdb("pdbs/AF-I1N612-F1-model_v2_P56_Glyma.19G018400_GmTLP55.pdb"), read.pdb("pdbs/AF-K7K481-F1-model_v2_P3_Glyma.01G165800_GmTLP3.pdb"), read.pdb("pdbs/AF-K7KA35-F1-model_v2_P7_Glyma.02G220900_GmTLP7.pdb"), read.pdb("pdbs/AF-K7KHW2-F1-model_v2_P10_Glyma.04G034300_GmTLP10.pdb"), read.pdb("pdbs/AF-K7KKT2-F1-model_v2_P11_Glyma.04G176200_GmTLP11.pdb"), read.pdb("pdbs/AF-K7KLR5-F1-model_v2_P12_Glyma.04G225800_GmTLP12.pdb"), read.pdb("pdbs/AF-K7KQQ0-F1-model_v2_P13_Glyma.05G169700_GmTLP13.pdb"), read.pdb("pdbs/AF-K7KSN0-F1-model_v2_P17_Glyma.06G023900_GmTLP17.pdb"), read.pdb("pdbs/AF-K7L6B3-F1-model_v2_P22_Glyma.08G128000_GmTLP22.pdb"), read.pdb("pdbs/AF-K7LB39-F1-model_v2_P24_Glyma.09G003600_GmTLP24.pdb"), read.pdb("pdbs/AF-K7LHQ6-F1-model_v2_P30_Glyma.10G062100_GmTLP30.pdb"), read.pdb("pdbs/AF-K7LP22-F1-model_v2_P34_Glyma.11G106100_GmTLP34.pdb"), read.pdb("pdbs/AF-K7LP26-F1-model_v2_P35_Glyma.11G106200_GmTLP35.pdb"), read.pdb("pdbs/AF-K7LRK1-F1-model_v2_P37_Glyma.11G220700_GmTLP37.pdb"), read.pdb("pdbs/AF-K7LST4-F1-model_v2_P38_Glyma.12G031000_GmTLP38.pdb"), read.pdb("pdbs/AF-K7LWN1-F1-model_v2_P41_Glyma.12G238900_GmTLP41.pdb"), read.pdb("pdbs/AF-K7LX39-F1-model_v2_P42_Glyma.13G082700_GmTLP42.pdb"), read.pdb("pdbs/AF-K7M5H5-F1-model_v2_P44_Glyma.14G077333_GmTLP44.pdb"), read.pdb("pdbs/AF-K7M7F0-F1-model_v2_P46_Glyma.14G163700_GmTLP46.pdb"), read.pdb("pdbs/AF-K7M7Y3-F1-model_v2_P47_Glyma.14G188400_GmTLP47.pdb"), read.pdb("pdbs/AF-K7M8K8-F1-model_v2_P48_Glyma.14G219600_GmTLP48.pdb"), read.pdb("pdbs/AF-K7MH02-F1-model_v2_P52_Glyma.16G127100_GmTLP51.pdb"), read.pdb("pdbs/AF-K7MP23-F1-model_v2_P55_Glyma.17G258600_GmTLP54.pdb"), read.pdb("pdbs/modeling_Glyma.14G077267_TLP43.pdb"))
+pdbs <- pdbaln(pdblist)
+rmsd <- as.data.frame(rmsd(pdbs, fit=TRUE))
+rownames(rmsd) <- c("Glyma.08G172700", "Glyma.06G139000", "Glyma.01G217600", "Glyma.01G217700", "Glyma.11G025600", "Glyma.07G135100", "Glyma.01G165400", "Glyma.01G165600", "Glyma.02G047400", "Glyma.02G249500", "Glyma.04G023700", "Glyma.05G245800", "Glyma.05G204800", "Glyma.05G204600", "Glyma.06G189100", "Glyma.08G053600", "Glyma.10G060300", "Glyma.10G061700", "Glyma.10G060800", "Glyma.10G061000", "Glyma.10G061800", "Glyma.11G077700", "Glyma.11G077800", "Glyma.11G140800", "Glyma.12G031200", "Glyma.12G064300", "Glyma.14G077400", "Glyma.15G254700", "Glyma.16G126900", "Glyma.17G248300", "Glyma.17G258500", "Glyma.19G018400", "Glyma.01G165800", "Glyma.02G220900", "Glyma.04G034300", "Glyma.04G176200", "Glyma.04G225800", "Glyma.05G169700", "Glyma.06G023900", "Glyma.08G128000", "Glyma.09G003600", "Glyma.10G062100", "Glyma.11G106100", "Glyma.11G106200", "Glyma.11G220700", "Glyma.12G031000", "Glyma.12G238900", "Glyma.13G082700", "Glyma.14G077333", "Glyma.14G163700", "Glyma.14G188400", "Glyma.14G219600", "Glyma.16G127100", "Glyma.17G258600", "Glyma.14G077267")
+colnames(rmsd) <- c("Glyma.08G172700", "Glyma.06G139000", "Glyma.01G217600", "Glyma.01G217700", "Glyma.11G025600", "Glyma.07G135100", "Glyma.01G165400", "Glyma.01G165600", "Glyma.02G047400", "Glyma.02G249500", "Glyma.04G023700", "Glyma.05G245800", "Glyma.05G204800", "Glyma.05G204600", "Glyma.06G189100", "Glyma.08G053600", "Glyma.10G060300", "Glyma.10G061700", "Glyma.10G060800", "Glyma.10G061000", "Glyma.10G061800", "Glyma.11G077700", "Glyma.11G077800", "Glyma.11G140800", "Glyma.12G031200", "Glyma.12G064300", "Glyma.14G077400", "Glyma.15G254700", "Glyma.16G126900", "Glyma.17G248300", "Glyma.17G258500", "Glyma.19G018400", "Glyma.01G165800", "Glyma.02G220900", "Glyma.04G034300", "Glyma.04G176200", "Glyma.04G225800", "Glyma.05G169700", "Glyma.06G023900", "Glyma.08G128000", "Glyma.09G003600", "Glyma.10G062100", "Glyma.11G106100", "Glyma.11G106200", "Glyma.11G220700", "Glyma.12G031000", "Glyma.12G238900", "Glyma.13G082700", "Glyma.14G077333", "Glyma.14G163700", "Glyma.14G188400", "Glyma.14G219600", "Glyma.16G127100", "Glyma.17G258600", "Glyma.14G077267")
+rmsd <- rmsd[order(row.names(rmsd)), order(colnames(rmsd))]
+```
+
+# heatmap matrix rmsd
+```{r}
+library(tiff)
+library(RColorBrewer)
+png(file = "/home/rebeca/Área-de-Trabalho/Projeto-PR-5/heatmap_rmsd.png", width = 1400, height = 1400)
+my_palette <- colorRampPalette(c("white", "yellow", "orange", "red", "black"))
+heatmap3::heatmap3(rmsd, margins = c(9, 9), col = my_palette(15), scale = "none", cexRow = 1, cexCol = 1)
+dev.off()
+```
+
+
+
