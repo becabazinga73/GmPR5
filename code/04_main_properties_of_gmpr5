@@ -46,7 +46,7 @@ unique_goterms <- go_pr5 %>%
 
 # Manually remove redudant terms (semantic similarity + overlap of associated genes)
 print(unique_goterms, n=Inf, width=10)
-filtered_goterms <- unique_goterms[c(8, 11, 12, 13, 16, 29, 31, 34, 39, 40, 43, 44, 50, 51, 52, 86, 88, 89, 87, 91, 92, 93), ]
+filtered_goterms <- unique_goterms[c(8, 11, 12, 13, 16, 29, 31, 34, 39, 40, 41, 43, 44, 50, 51, 52, 68, 86, 87, 88, 89, 91, 92, 93), ]
 
 #----Ecport data as a table----
 write_tsv(filtered_goterms, file=here("products", "tables", "go_table.tsv"))
