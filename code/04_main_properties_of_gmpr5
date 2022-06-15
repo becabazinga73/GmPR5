@@ -1,3 +1,4 @@
+---
 title: "Genomic and structural properties of GmTLPs genes"
 author: "Rebeca de Souza Brinco"
 date: "09/05/2022"
@@ -14,9 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(here)
 library(tidyverse)
-seqs_pr5 <- Biostrings::readAAStringSet(
-    here("products", "result_files", "pr5_nostopcodon.fa")
-)
+seqs_pr5<- Biostrings::readAAStringSet(here("products", "result_files", "pr5_nostopcodon.fa"))
 genes_and_chrom <- data.frame(Gene=sort(names(seqs_pr5)), 
                               Chr=sort(names(seqs_pr5))) %>%
   mutate(Chr = str_replace(Chr, "Glyma\\.", "")) %>%
@@ -31,20 +30,69 @@ genes_and_chrom
 ## GO annotation
 
 Here, we will download GO annotation from PLAZA to see which GO terms are attributed to GmTLPs genes.
-
-
 ```{r}
+go <- as.data.frame(readr::read_tsv("ftp://ftp.psb.ugent.be/pub/plaza/plaza_public_dicots_05/GO/go.gma.csv.gz", skip=8))
+names(go)[1] <- "Gene_ID"
+go_pr5 <- go[go$Gene_ID %in% names(seqs_pr5), ]
 
+# Create a data frame with GO terms and their associated genes separated by comma
+unique_goterms <- go_pr5 %>%
+  select(Gene_ID, go, description) %>%
+  unique() %>%
+  group_by(go, description) %>%
+  summarise(Genes = str_c(Gene_ID, collapse = ", ")) %>%
+  mutate(n = str_count(Genes, "Glyma")) %>%
+  arrange(-n)
+
+# Manually remove redudant terms (semantic similarity + overlap of associated genes)
+print(unique_goterms, n=Inf, width=10)
+filtered_goterms <- unique_goterms[c(8, 11, 12, 13, 16, 29, 31, 34, 39, 40, 43, 44, 50, 51, 52, 86, 88, 89, 87, 91, 92, 93), ]
+
+#----Ecport data as a table----
+write_tsv(filtered_goterms, file=here("products", "tables", "go_table.tsv"))
 ```
+
+
 
 ## Structural analysis
 
-```{r}
+### Download of pdf files
+Pdb files were downloaded from Alphafold in the compressed prediction files model organism proteomes session, and the IDs of each soybean TLP gene were identified, based on UniProt. 
+With that, the corresponding pdb files were extracted: Glyma.10G061700 and Glyma.10G060300 genes have the same ID: I1L923 (pdb file: AF-I1L923-F1-model_v2.pdb.gz), due to sequence similarity.
+The Glyma.14G077333 gene has the same sequence as the ID gene: K7M5H5. So it has the same pdb file: AF-K7M5H5-F1-model_v2.pdb.gz.
+The Glyma.14G077267 gene is missing in UniProt, so modeling was done in phyre2 using One to One threading. In this method, the pdb file of K7M5H5 was provided as a template for modeling and the amino acid sequence of the protein of Glyma.14G077267.
 
+### Secondary structure analysis
+The secondary structures were counted by analyzing PDBs files from the Stride Web interface (http://webclu.bio.wzw.tum.de/cgi-bin/stride/stridecgi.py).
+
+```{r}
+second.structure <- data.frame(Genes=c("Glyma.08G172700", "Glyma.06G139000",                                                      "Glyma.01G217600", "Glyma.01G217700",                                                      "Glyma.11G025600", "Glyma.07G135100", 
+                               "Glyma.01G165400", "Glyma.01G165600", "Glyma.02G047400",
+                               "Glyma.02G249500", "Glyma.04G023700", "Glyma.05G245800",
+                               "Glyma.05G204800", "Glyma.05G204600", "Glyma.06G189100",
+                               "Glyma.08G053600", "Glyma.10G060300", "Glyma.10G061700", 
+                               "Glyma.10G060800", "Glyma.10G061000", "Glyma.10G061800",
+                               "Glyma.11G077700", "Glyma.11G077800", "Glyma.11G140800",
+                               "Glyma.12G031200", "Glyma.12G064300", "Glyma.14G077400",
+                               "Glyma.15G254700", "Glyma.16G126900", "Glyma.17G248300",
+                               "Glyma.17G258500", "Glyma.19G018400", "Glyma.01G165800", 
+                               "Glyma.02G220900", "Glyma.04G034300", "Glyma.04G176200",
+                               "Glyma.04G225800", "Glyma.05G169700", "Glyma.06G023900",
+                               "Glyma.08G128000", "Glyma.09G003600", "Glyma.10G062100",
+                               "Glyma.11G106100", "Glyma.11G106200", "Glyma.11G220700",
+                               "Glyma.12G031000", "Glyma.12G238900", "Glyma.13G082700",
+                               "Glyma.14G077333", "Glyma.14G163700", "Glyma.14G188400",
+                               "Glyma.14G219600", "Glyma.16G127100", "Glyma.17G258600",                                   "Glyma.14G077267"), 
+                               Alpha_helix=c(6, 5, 13, 5, 9, 6, 19, 17, 22, 8, 15, 6, 8, 
+                               8, 31, 6, 6, 6, 5, 6, 5, 17, 20, 6, 14, 6, 6, 6, 24, 10, 17,                                8, 19, 16, 6, 4, 6, 14, 16, 5, 8, 6, 20, 12, 6, 13, 6, 20,                                 10, 19, 15, 20, 17, 18, 11),
+                               Beta_sheet=c(38, 31, 36, 35, 38, 35, 24, 25, 25, 33, 24, 30,                                37, 35, 25, 29, 28, 28, 31, 33, 31, 25, 22, 32, 21, 32, 30,                                37, 25, 31, 25, 26, 32, 26, 29, 28, 19, 32, 24, 31, 34, 32,                                24, 13, 37, 24, 33, 28, 32, 28, 25, 24, 26, 22, 32),
+                               Three_ten_helix=c(6, 4, 4, 5, 3, 5, 5, 3, 5, 6, 5, 6, 3, 3, 3, 5,                                2, 2, 3, 5, 3, 3, 5, 6, 5, 6, 5, 4, 5, 5, 5, 6, 2, 4, 7, 4,                                4, 4, 4, 3, 8, 1, 5, 3, 4, 4, 6, 3, 6, 4, 6, 5, 5, 4, 5),
+                               Pi_helix=c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+second.structure <- second.structure[order(second.structure$Genes), ] 
 ```
 
 
-### Physicochemical properties of PR-5
+### Physicochemical properties of PR-1
 
 ```{r}
 library(Peptides)
@@ -61,17 +109,17 @@ The presence/absence of signal peptides was analyzed with SignalP 5.0 (http://ww
 ```{r}
 #----Signal peptide analysis----
 signalp <- read.csv(
-    here("products", "result_files", "SignalP5.0", "PR5_signalp5.0.txt"), 
+    here("products", "result_files", "SignalP6.0", "PR5_signalp6.0.txt"), 
     header=TRUE, sep="\t", skip=1
     )
 # Create a table containing cleavavge sites of signal peptides
 sptable <- signalp
 sptable$SP <- sapply(strsplit(sptable$CS.Position, ": "), `[`, 2)
 sptable <- sptable[, c(1, 6)]
-sptable$SP <- gsub("\\..*", "", sptable$SP)
 names(sptable) <- c("Gene_ID", "SP")
 sptable <- sptable[order(sptable$Gene_ID), ]
 head(sptable)
+
 
 
 #----Subcellular localization analysis----
@@ -84,45 +132,43 @@ cc <- cc %>%
   distinct() %>%
   arrange(Gene) %>%
   mutate(gocc_des = str_replace(gocc_des, "extracellular region", "Apoplast")) %>%
+  group_by(Gene) %>%
+  summarise(gocc_des = paste(gocc_des, collapse = ", ")) %>%
   as.data.frame()
 ```
 
+## Gene structures (exon-intron boundaries)
 
-### Genomic properties of PR-5
-
-
+The .gff file was downloaded from PLAZA 5.0 Dicots.
 ```{r}
-
 library(GenomicRanges)
 library(gggenes)
+library(here)
 gff <- rtracklayer::import(here("data", "PLAZA_selected.transcripts.gff.gz"))
 seqs_pr5 <- Biostrings::readAAStringSet(
   here("products", "result_files", "pr5_nostopcodon.fa")
 )
-
-# Exons
-gene.str.exons <- as.data.frame(gff[gff$type == "exon" & gff$gene_id %in% names(seqs_pr5)])
-gene.str.exons$ID <- gsub(".*exon:", "", gene.str.exons$ID)
-gene.str.exonlist <- split(gene.str.exons, gene.str.exons$Name)
-gene.str.exons <- Reduce(rbind, lapply(gene.str.exonlist, function(x) {
-  start <- x[1,2] - 1
-  x$start <- x$start - start
-  x$end <- x$end - start
-  return(x)
-}))
 ```
 
 
+# Exons
+
 ```{r}
-# Stats
+gene.str.exons <- as.data.frame(gff[gff$type == "exon" & gff$gene_id %in% names(seqs_pr5)])
+gene.str.exons$ID <- gsub(".*exon:", "", gene.str.exons$ID)
+gene.str.exonlist <- split(gene.str.exons, gene.str.exons$Name)
+```
+
+### Genomic properties of PR-5
+
+```{r}
 exon_no <- unlist(lapply(gene.str.exonlist, nrow))
 seqlength <- width(seqs_pr5)
 ```
 
 Summarizing it all in a table.
 
-
-```{r}
+```{r table1_paper}
 table1 <- data.frame("Gene_ID" = names(seqs_pr5),
                      "Gene_name" = paste0("GmTLP", 1:length(seqs_pr5)),
                      "Exon_no" = exon_no,
@@ -130,8 +176,7 @@ table1 <- data.frame("Gene_ID" = names(seqs_pr5),
                      "pI" = signif(pi, 2),
                      "MW (kDa)" = round(mw),
                      "Hydrophobicity" = signif(hydrophibicity, 2),
-                     "SL" = "Apoplast",
-                     "SP" = sptable$SP,
+                                         "SP" = sptable$SP,
                      stringsAsFactors=FALSE)
 table1 <- merge(table1, second.structure, by.x="Gene_ID", by.y="Genes")
 table1
@@ -141,3 +186,12 @@ write.table(
     sep=",", quote=FALSE, row.names=FALSE
     )
 ```
+
+
+## Session information
+
+This document was created under the following conditions:
+```{r}
+sessionInfo()
+```
+
