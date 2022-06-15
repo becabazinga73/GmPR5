@@ -1,0 +1,336 @@
+IQ-TREE multicore version 2.0.3 for Linux 64-bit built Dec 20 2020
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    rebeca-POS-EIH61CE (SSE4.2, 1 GB RAM)
+Command: iqtree -s cross_species_mafft.fasta -B 1000 --prefix cross_species
+Seed:    585515 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Mon Mar  7 16:33:58 2022
+Kernel:  SSE2 - 1 threads (2 CPU cores detected)
+
+HINT: Use -nt option to specify number of threads because your CPU has 2 cores!
+HINT: -nt AUTO will automatically determine the best number of threads to use.
+
+Reading alignment file cross_species_mafft.fasta ... Fasta format detected
+Alignment most likely contains protein sequences
+Alignment has 113 sequences with 921 columns, 731 distinct patterns
+366 parsimony-informative, 218 singleton sites, 337 constant sites
+                 Gap/Ambiguity  Composition  p-value
+   1  AT1G18250         73.62%    passed     48.96%
+   2  AT1G19320         73.18%    passed     34.04%
+   3  AT1G20030         65.69%    passed     40.06%
+   4  AT1G73620         71.34%    passed     80.28%
+   5  AT1G75030         73.29%    passed     80.83%
+   6  AT1G75040         74.05%    passed     71.48%
+   7  AT1G75050         73.29%    passed     78.88%
+   8  AT1G75800         64.17%    passed     40.73%
+   9  AT1G77700         61.35%    failed      1.78%
+  10  AT2G17860         72.42%    passed     55.30%
+  11  AT2G24810         79.04%    failed      0.16%
+  12  AT2G28790         70.25%    failed      0.00%
+  13  AT4G11650         73.51%    passed     18.78%
+  14  AT4G18253         73.62%    passed     54.00%
+  15  AT4G24180         65.91%    passed     73.10%
+  16  AT4G36000         77.42%    failed      2.54%
+  17  AT4G36010         67.32%    passed     41.47%
+  18  AT4G38660         62.54%    failed      1.07%
+  19  AT4G38670         69.49%    passed     65.83%
+  20  AT5G02140         68.08%    passed     45.18%
+  21  AT5G24620         67.10%    failed      0.00%
+  22  AT5G40020         72.20%    passed     59.06%
+  23  Glyma.01G165400   65.47%    passed     19.71%
+  24  Glyma.01G165600   66.99%    passed     58.95%
+  25  Glyma.01G165800   64.93%    passed     18.86%
+  26  Glyma.01G217600   75.79%    passed     41.07%
+  27  Glyma.01G217700   73.94%    passed     34.02%
+  28  Glyma.02G047400   66.45%    passed     29.12%
+  29  Glyma.02G220900   66.02%    passed     75.92%
+  30  Glyma.02G249500   73.29%    passed     21.11%
+  31  Glyma.04G023700   64.28%    passed     57.02%
+  32  Glyma.04G034300   83.28%    passed     20.30%
+  33  Glyma.04G176200   66.88%    passed     42.34%
+  34  Glyma.04G225800   77.52%    passed     53.90%
+  35  Glyma.05G169700   68.84%    passed     73.29%
+  36  Glyma.05G204600   75.68%    passed     29.53%
+  37  Glyma.05G204800   75.90%    passed     22.06%
+  38  Glyma.05G245800   73.40%    passed     70.80%
+  39  Glyma.06G023900   64.39%    passed     74.01%
+  40  Glyma.06G139000   73.40%    passed     76.21%
+  41  Glyma.06G189100   65.15%    passed     37.54%
+  42  Glyma.07G135100   73.40%    passed     42.03%
+  43  Glyma.08G053600   72.53%    passed     82.37%
+  44  Glyma.08G128000   68.62%    passed     49.06%
+  45  Glyma.08G172700   80.56%    passed     71.65%
+  46  Glyma.09G003600   81.98%    passed     85.13%
+  47  Glyma.10G060300   73.62%    failed      4.38%
+  48  Glyma.10G060800   71.44%    passed     57.92%
+  49  Glyma.10G061000   73.72%    passed     71.39%
+  50  Glyma.10G061700   73.62%    failed      4.38%
+  51  Glyma.10G061800   71.66%    passed     63.55%
+  52  Glyma.10G062100   73.94%    failed      4.19%
+  53  Glyma.11G025600   75.68%    passed     62.45%
+  54  Glyma.11G077700   66.99%    passed     60.26%
+  55  Glyma.11G077800   65.69%    passed     28.86%
+  56  Glyma.11G106100   68.84%    passed     57.88%
+  57  Glyma.11G106200   85.67%    failed      0.91%
+  58  Glyma.11G140800   73.07%    failed      0.03%
+  59  Glyma.11G220700   72.75%    passed     35.63%
+  60  Glyma.12G031000   66.12%    passed     43.82%
+  61  Glyma.12G031200   62.43%    failed      0.76%
+  62  Glyma.12G064300   73.07%    failed      0.14%
+  63  Glyma.12G238900   74.38%    passed     98.98%
+  64  Glyma.13G082700   68.84%    passed     98.49%
+  65  Glyma.14G077267   73.29%    passed     83.87%
+  66  Glyma.14G077333   72.86%    passed     58.84%
+  67  Glyma.14G077400   72.75%    passed     53.02%
+  68  Glyma.14G163700   68.84%    passed     92.79%
+  69  Glyma.14G188400   69.49%    passed     82.22%
+  70  Glyma.14G219600   65.47%    passed     91.16%
+  71  Glyma.15G254700   73.29%    passed     82.83%
+  72  Glyma.16G126900   66.78%    passed     40.98%
+  73  Glyma.16G127100   67.54%    passed     36.67%
+  74  Glyma.17G248300   73.07%    passed     37.34%
+  75  Glyma.17G258500   65.80%    passed     72.52%
+  76  Glyma.17G258600   65.91%    passed     69.05%
+  77  Glyma.19G018400   71.66%    passed      8.73%
+  78  VMungo0251G1400   89.14%    passed     37.41%
+  79  VMungo0251G1598   75.57%    passed     28.25%
+  80  VMungo0251G1956   67.10%    passed     52.11%
+  81  VMungo0251G2158   68.95%    passed     85.72%
+  82  VMungo0251G2316   72.96%    passed     73.20%
+  83  VMungo0251G2387   75.68%    passed      7.37%
+  84  VMungo0331G0260   80.02%    passed      5.90%
+  85  VMungo0464G0607   66.56%    passed     29.20%
+  86  VMungo0464G2133   72.42%    passed     25.18%
+  87  VMungo0540G1225   69.60%    passed     82.60%
+  88  VMungo0647G0786   66.34%    passed     50.79%
+  89  VMungo0647G1561   66.23%    passed     90.70%
+  90  VMungo0647G2103   65.69%    passed     81.75%
+  91  VMungo0647G2276   65.91%    passed     51.89%
+  92  VMungo0647G2460   73.51%    passed     34.41%
+  93  VMungo0647G2509   65.58%    passed     32.54%
+  94  VMungo0720G2253   59.07%    failed      0.18%
+  95  VMungo1127G0296   66.34%    passed     20.74%
+  96  VMungo1127G0335   63.74%    failed      0.00%
+  97  VMungo1127G0813   61.78%    failed      0.14%
+  98  VMungo1127G1258   73.83%    passed     47.96%
+  99  VMungo1215G0167   75.57%    passed      7.62%
+ 100  VMungo1215G0547   70.14%    passed     26.27%
+ 101  VMungo1215G1788   65.36%    passed     34.64%
+ 102  VMungo1215G2144   68.51%    passed     38.56%
+ 103  VMungo1215G2172   70.14%    passed     46.70%
+ 104  VMungo1215G2683   73.72%    passed     27.84%
+ 105  VMungo1215G3138   67.21%    passed     43.84%
+ 106  VMungo1215G3212   72.53%    passed     20.45%
+ 107  VMungo1309G0497   63.41%    passed     90.59%
+ 108  VMungo1309G0632   66.88%    passed     66.90%
+ 109  VMungo1309G0875   78.28%    failed      0.00%
+ 110  VMungo1309G1426   82.63%    passed     51.44%
+ 111  VMungo1309G1447   82.08%    passed     72.52%
+ 112  VMungo1383G0044   73.62%    passed     46.73%
+ 113  VMungo1383G1547   73.40%    passed     52.22%
+WARNING: 113 sequences contain more than 50% gaps/ambiguity
+****  TOTAL             70.93%  17 sequences failed composition chi2 test (p-value<5%; df=19)
+NOTE: Glyma.10G061700 is identical to Glyma.10G060300 but kept for subsequent analysis
+
+NOTE: Restoring information from model checkpoint file cross_species.model.gz
+
+CHECKPOINT: Initial tree restored
+Perform fast likelihood tree search using LG+I+G model...
+CHECKPOINT: Tree restored, LogL: -32370.159
+NOTE: ModelFinder requires 134 MB RAM!
+ModelFinder will test up to 546 protein models (sample size: 921) ...
+ No. Model         -LnL         df  AIC          AICc         BIC
+  1  LG            33739.717    223 67925.435    68068.769    69001.512
+  2  LG+I          33664.368    224 67776.735    67921.563    68857.638
+  3  LG+G4         32370.651    224 65189.302    65334.129    66270.205
+  4  LG+I+G4       32366.796    225 65183.591    65329.922    66269.320
+  5  LG+R2         32596.909    225 65643.818    65790.149    66729.547
+  6  LG+R3         32411.785    227 65277.569    65426.937    66372.949
+  7  LG+R4         32331.957    229 65121.915    65274.361    66226.945
+  8  LG+R5         32315.879    231 65093.759    65249.323    66208.440
+  9  LG+R6         32311.704    233 65089.409    65248.134    66213.741
+ 21  LG+F+R5       32600.704    250 65701.407    65888.721    66907.772
+ 22  LG+F+R6       32597.561    252 65699.121    65890.008    66915.137
+ 34  WAG+R5        32198.556    231 64859.112    65014.677    65973.794
+ 35  WAG+R6        32195.827    233 64857.654    65016.379    65981.986
+ 47  WAG+F+R5      32307.744    250 65115.488    65302.801    66321.853
+ 48  WAG+F+R6      32306.474    252 65116.949    65307.835    66332.965
+ 60  JTT+R5        32128.004    231 64718.008    64873.573    65832.690
+ 61  JTT+R6        32122.875    233 64711.751    64870.476    65836.083
+ 73  JTT+F+R5      32426.252    250 65352.504    65539.817    66558.869
+ 74  JTT+F+R6      32421.899    252 65347.799    65538.685    66563.815
+ 86  JTTDCMut+R5   32131.851    231 64725.702    64881.266    65840.383
+ 87  JTTDCMut+R6   32126.947    233 64719.894    64878.619    65844.226
+ 99  JTTDCMut+F+R5 32421.657    250 65343.313    65530.627    66549.678
+100  JTTDCMut+F+R6 32417.403    252 65338.806    65529.692    66554.822
+112  DCMut+R5      32493.075    231 65448.151    65603.715    66562.832
+113  DCMut+R6      32490.324    233 65446.648    65605.373    66570.980
+125  DCMut+F+R5    32611.611    250 65723.222    65910.535    66929.587
+126  DCMut+F+R6    32606.958    252 65717.916    65908.802    66933.931
+138  VT+R5         32228.122    231 64918.243    65073.808    66032.925
+139  VT+R6         32225.446    233 64916.892    65075.617    66041.224
+151  VT+F+R5       32478.414    250 65456.827    65644.141    66663.192
+152  VT+F+R6       32476.952    252 65457.903    65648.789    66673.919
+164  PMB+R5        32481.502    231 65425.003    65580.568    66539.684
+165  PMB+R6        32479.712    233 65425.423    65584.148    66549.755
+177  PMB+F+R5      32620.360    250 65740.720    65928.034    66947.085
+178  PMB+F+R6      32619.584    252 65743.167    65934.053    66959.183
+190  Blosum62+R5   32579.516    231 65621.032    65776.597    66735.713
+191  Blosum62+R6   32577.325    233 65620.649    65779.374    66744.981
+203  Blosum62+F+R5 32674.350    250 65848.700    66036.013    67055.065
+204  Blosum62+F+R6 32673.438    252 65850.876    66041.762    67066.892
+216  Dayhoff+R5    32493.134    231 65448.269    65603.833    66562.950
+217  Dayhoff+R6    32490.390    233 65446.781    65605.506    66571.113
+229  Dayhoff+F+R5  32612.083    250 65724.166    65911.479    66930.531
+230  Dayhoff+F+R6  32607.448    252 65718.896    65909.782    66934.912
+242  mtREV+R5      33755.586    231 67973.172    68128.737    69087.853
+243  mtREV+R6      33749.359    233 67964.718    68123.443    69089.050
+255  mtREV+F+R5    33094.603    250 66689.207    66876.520    67895.572
+256  mtREV+F+R6    33085.632    252 66675.264    66866.151    67891.280
+268  mtART+R5      34548.336    231 69558.672    69714.236    70673.353
+269  mtART+R6      34496.813    233 69459.625    69618.350    70583.957
+281  mtART+F+R5    34070.257    250 68640.513    68827.827    69846.878
+282  mtART+F+R6    34061.270    252 68626.539    68817.426    69842.555
+294  mtZOA+R5      33693.041    231 67848.082    68003.647    68962.763
+295  mtZOA+R6      33652.317    233 67770.633    67929.358    68894.965
+307  mtZOA+F+R5    33483.135    250 67466.271    67653.584    68672.636
+308  mtZOA+F+R6    33462.201    252 67428.401    67619.287    68644.417
+320  mtMet+R5      33650.722    231 67763.445    67919.009    68878.126
+321  mtMet+R6      33646.498    233 67758.996    67917.721    68883.328
+333  mtMet+F+R5    33144.028    250 66788.057    66975.370    67994.422
+334  mtMet+F+R6    33135.247    252 66774.494    66965.380    67990.510
+346  mtVer+R5      33874.427    231 68210.855    68366.419    69325.536
+347  mtVer+R6      33870.418    233 68206.837    68365.562    69331.169
+359  mtVer+F+R5    33378.285    250 67256.570    67443.883    68462.935
+360  mtVer+F+R6    33369.350    252 67242.700    67433.586    68458.716
+372  mtInv+R5      33827.785    231 68117.570    68273.134    69232.251
+373  mtInv+R6      33822.971    233 68111.942    68270.667    69236.274
+385  mtInv+F+R5    32973.817    250 66447.634    66634.948    67653.999
+386  mtInv+F+R6    32967.031    252 66438.061    66628.947    67654.077
+398  mtMAM+R5      34499.620    231 69461.240    69616.805    70575.921
+399  mtMAM+R6      34489.553    233 69445.106    69603.831    70569.439
+411  mtMAM+F+R5    33702.052    250 67904.103    68091.417    69110.468
+412  mtMAM+F+R6    33695.825    252 67895.651    68086.537    69111.666
+424  HIVb+R5       32805.013    231 66072.027    66227.591    67186.708
+425  HIVb+R6       32795.621    233 66057.241    66215.966    67181.574
+437  HIVb+F+R5     32931.651    250 66363.303    66550.616    67569.668
+438  HIVb+F+R6     32923.722    252 66351.443    66542.329    67567.459
+450  HIVw+R5       33693.452    231 67848.903    68004.468    68963.585
+451  HIVw+R6       33690.115    233 67846.229    68004.954    68970.561
+463  HIVw+F+R5     33379.739    250 67259.479    67446.792    68465.844
+464  HIVw+F+R6     33368.470    252 67240.940    67431.826    68456.956
+476  FLU+R5        32554.982    231 65571.964    65727.528    66686.645
+477  FLU+R6        32547.560    233 65561.120    65719.845    66685.453
+489  FLU+F+R5      32472.088    250 65444.176    65631.489    66650.541
+490  FLU+F+R6      32466.251    252 65436.501    65627.387    66652.517
+502  rtREV+R5      32687.466    231 65836.933    65992.497    66951.614
+503  rtREV+R6      32682.499    233 65830.998    65989.723    66955.331
+515  rtREV+F+R5    32873.406    250 66246.812    66434.126    67453.177
+516  rtREV+F+R6    32870.460    252 66244.919    66435.805    67460.935
+528  cpREV+R5      32390.443    231 65242.886    65398.451    66357.568
+529  cpREV+R6      32383.757    233 65233.515    65392.240    66357.847
+541  cpREV+F+R5    32693.159    250 65886.318    66073.631    67092.683
+542  cpREV+F+R6    32687.408    252 65878.816    66069.702    67094.832
+Akaike Information Criterion:           JTT+R6
+Corrected Akaike Information Criterion: JTT+R6
+Bayesian Information Criterion:         JTT+R5
+Best-fit model: JTT+R5 chosen according to BIC
+
+All model information printed to cross_species.model.gz
+CPU time for ModelFinder: 13692.326 seconds (3h:48m:12s)
+Wall-clock time for ModelFinder: 13725.942 seconds (3h:48m:45s)
+Generating 1000 samples for ultrafast bootstrap (seed: 585515)...
+
+NOTE: 68 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -32128.004
+Optimal log-likelihood: -32127.957
+Site proportion and rates:  (0.117,0.098) (0.167,0.301) (0.169,0.595) (0.305,1.093) (0.242,2.082)
+Parameters optimization took 1 rounds (10.917 sec)
+Computing ML distances based on estimated model parameters... 2.479 sec
+WARNING: Some pairwise ML distances are too long (saturated)
+Computing BIONJ tree...
+0.008 seconds
+Log-likelihood of BIONJ tree: -32255.404
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 8.331 second
+Computing log-likelihood of 98 initial trees ... 107.280 seconds
+Current best score: -32127.957
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -32124.860
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 8: -32119.492
+Iteration 10 / LogL: -32124.984 / Time: 0h:6m:11s
+Iteration 20 / LogL: -32137.527 / Time: 0h:9m:15s
+Finish initializing candidate tree set (18)
+Current best tree score: -32119.492 / CPU time: 531.775
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Iteration 30 / LogL: -32123.122 / Time: 0h:12m:36s (0h:33m:55s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 33: -32118.860
+Iteration 40 / LogL: -32119.557 / Time: 0h:16m:16s (0h:38m:48s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 50: -32118.483
+Iteration 50 / LogL: -32118.483 / Time: 0h:20m:2s (0h:40m:53s left)
+Log-likelihood cutoff on original alignment: -32166.243
+Iteration 60 / LogL: -32120.219 / Time: 0h:23m:36s (0h:36m:1s left)
+Iteration 70 / LogL: -32119.222 / Time: 0h:27m:24s (0h:31m:46s left)
+Iteration 80 / LogL: -32130.446 / Time: 0h:30m:43s (0h:27m:13s left)
+Iteration 90 / LogL: -32119.612 / Time: 0h:34m:16s (0h:23m:6s left)
+Iteration 100 / LogL: -32119.991 / Time: 0h:37m:59s (0h:19m:11s left)
+Log-likelihood cutoff on original alignment: -32166.243
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.997
+Iteration 110 / LogL: -32118.534 / Time: 0h:42m:7s (0h:34m:46s left)
+Iteration 120 / LogL: -32119.369 / Time: 0h:45m:46s (0h:30m:46s left)
+Iteration 130 / LogL: -32121.355 / Time: 0h:49m:19s (0h:26m:45s left)
+Iteration 140 / LogL: -32120.123 / Time: 0h:52m:55s (0h:22m:50s left)
+Iteration 150 / LogL: -32120.665 / Time: 0h:56m:28s (0h:18m:57s left)
+Log-likelihood cutoff on original alignment: -32166.243
+TREE SEARCH COMPLETED AFTER 151 ITERATIONS / Time: 0h:56m:47s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -32118.483
+Optimal log-likelihood: -32118.472
+Site proportion and rates:  (0.117,0.096) (0.174,0.307) (0.157,0.601) (0.310,1.086) (0.242,2.081)
+Parameters optimization took 1 rounds (7.133 sec)
+BEST SCORE FOUND : -32118.472
+Creating bootstrap support values...
+Split supports printed to NEXUS file cross_species.splits.nex
+Total tree length: 51.088
+
+Total number of iterations: 151
+CPU time used for tree search: 3374.580 sec (0h:56m:14s)
+Wall-clock time used for tree search: 3383.779 sec (0h:56m:23s)
+Total CPU time used: 3406.075 sec (0h:56m:46s)
+Total wall-clock time used: 3415.597 sec (0h:56m:55s)
+
+Computing bootstrap consensus tree...
+Reading input file cross_species.splits.nex...
+113 taxa and 435 splits.
+Consensus tree written to cross_species.contree
+Reading input trees file cross_species.contree
+Log-likelihood of consensus tree: -32118.471
+
+Analysis results written to: 
+  IQ-TREE report:                cross_species.iqtree
+  Maximum-likelihood tree:       cross_species.treefile
+  Likelihood distances:          cross_species.mldist
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          cross_species.splits.nex
+  Consensus tree:                cross_species.contree
+  Screen log file:               cross_species.log
+
+Date and Time: Mon Mar  7 21:19:50 2022

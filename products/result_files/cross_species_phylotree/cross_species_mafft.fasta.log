@@ -1,0 +1,166 @@
+IQ-TREE multicore version 1.6.12 for Linux 64-bit built Mar 23 2020
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    rebeca-POS-EIH61CE (SSE4.2, 1 GB RAM)
+Command: iqtree -s /home/rebeca/Projeto_PR-5/products/result_files/cross_species_phylotree/cross_species_mafft.fasta
+Seed:    541714 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Thu Mar  3 18:37:51 2022
+Kernel:  SSE2 - 1 threads (2 CPU cores detected)
+
+HINT: Use -nt option to specify number of threads because your CPU has 2 cores!
+HINT: -nt AUTO will automatically determine the best number of threads to use.
+
+Reading alignment file /home/rebeca/Projeto_PR-5/products/result_files/cross_species_phylotree/cross_species_mafft.fasta ... Fasta format detected
+Alignment most likely contains protein sequences
+Alignment has 113 sequences with 921 columns, 731 distinct patterns
+366 parsimony-informative, 218 singleton sites, 337 constant sites
+                 Gap/Ambiguity  Composition  p-value
+   1  AT1G18250         73.62%    passed     48.96%
+   2  AT1G19320         73.18%    passed     34.04%
+   3  AT1G20030         65.69%    passed     40.06%
+   4  AT1G73620         71.34%    passed     80.28%
+   5  AT1G75030         73.29%    passed     80.83%
+   6  AT1G75040         74.05%    passed     71.48%
+   7  AT1G75050         73.29%    passed     78.88%
+   8  AT1G75800         64.17%    passed     40.73%
+   9  AT1G77700         61.35%    failed      1.78%
+  10  AT2G17860         72.42%    passed     55.30%
+  11  AT2G24810         79.04%    failed      0.16%
+  12  AT2G28790         70.25%    failed      0.00%
+  13  AT4G11650         73.51%    passed     18.78%
+  14  AT4G18253         73.62%    passed     54.00%
+  15  AT4G24180         65.91%    passed     73.10%
+  16  AT4G36000         77.42%    failed      2.54%
+  17  AT4G36010         67.32%    passed     41.47%
+  18  AT4G38660         62.54%    failed      1.07%
+  19  AT4G38670         69.49%    passed     65.83%
+  20  AT5G02140         68.08%    passed     45.18%
+  21  AT5G24620         67.10%    failed      0.00%
+  22  AT5G40020         72.20%    passed     59.06%
+  23  Glyma.01G165400   65.47%    passed     19.71%
+  24  Glyma.01G165600   66.99%    passed     58.95%
+  25  Glyma.01G165800   64.93%    passed     18.86%
+  26  Glyma.01G217600   75.79%    passed     41.07%
+  27  Glyma.01G217700   73.94%    passed     34.02%
+  28  Glyma.02G047400   66.45%    passed     29.12%
+  29  Glyma.02G220900   66.02%    passed     75.92%
+  30  Glyma.02G249500   73.29%    passed     21.11%
+  31  Glyma.04G023700   64.28%    passed     57.02%
+  32  Glyma.04G034300   83.28%    passed     20.30%
+  33  Glyma.04G176200   66.88%    passed     42.34%
+  34  Glyma.04G225800   77.52%    passed     53.90%
+  35  Glyma.05G169700   68.84%    passed     73.29%
+  36  Glyma.05G204600   75.68%    passed     29.53%
+  37  Glyma.05G204800   75.90%    passed     22.06%
+  38  Glyma.05G245800   73.40%    passed     70.80%
+  39  Glyma.06G023900   64.39%    passed     74.01%
+  40  Glyma.06G139000   73.40%    passed     76.21%
+  41  Glyma.06G189100   65.15%    passed     37.54%
+  42  Glyma.07G135100   73.40%    passed     42.03%
+  43  Glyma.08G053600   72.53%    passed     82.37%
+  44  Glyma.08G128000   68.62%    passed     49.06%
+  45  Glyma.08G172700   80.56%    passed     71.65%
+  46  Glyma.09G003600   81.98%    passed     85.13%
+  47  Glyma.10G060300   73.62%    failed      4.38%
+  48  Glyma.10G060800   71.44%    passed     57.92%
+  49  Glyma.10G061000   73.72%    passed     71.39%
+  50  Glyma.10G061700   73.62%    failed      4.38%
+  51  Glyma.10G061800   71.66%    passed     63.55%
+  52  Glyma.10G062100   73.94%    failed      4.19%
+  53  Glyma.11G025600   75.68%    passed     62.45%
+  54  Glyma.11G077700   66.99%    passed     60.26%
+  55  Glyma.11G077800   65.69%    passed     28.86%
+  56  Glyma.11G106100   68.84%    passed     57.88%
+  57  Glyma.11G106200   85.67%    failed      0.91%
+  58  Glyma.11G140800   73.07%    failed      0.03%
+  59  Glyma.11G220700   72.75%    passed     35.63%
+  60  Glyma.12G031000   66.12%    passed     43.82%
+  61  Glyma.12G031200   62.43%    failed      0.76%
+  62  Glyma.12G064300   73.07%    failed      0.14%
+  63  Glyma.12G238900   74.38%    passed     98.98%
+  64  Glyma.13G082700   68.84%    passed     98.49%
+  65  Glyma.14G077267   73.29%    passed     83.87%
+  66  Glyma.14G077333   72.86%    passed     58.84%
+  67  Glyma.14G077400   72.75%    passed     53.02%
+  68  Glyma.14G163700   68.84%    passed     92.79%
+  69  Glyma.14G188400   69.49%    passed     82.22%
+  70  Glyma.14G219600   65.47%    passed     91.16%
+  71  Glyma.15G254700   73.29%    passed     82.83%
+  72  Glyma.16G126900   66.78%    passed     40.98%
+  73  Glyma.16G127100   67.54%    passed     36.67%
+  74  Glyma.17G248300   73.07%    passed     37.34%
+  75  Glyma.17G258500   65.80%    passed     72.52%
+  76  Glyma.17G258600   65.91%    passed     69.05%
+  77  Glyma.19G018400   71.66%    passed      8.73%
+  78  VMungo0251G1400   89.14%    passed     37.41%
+  79  VMungo0251G1598   75.57%    passed     28.25%
+  80  VMungo0251G1956   67.10%    passed     52.11%
+  81  VMungo0251G2158   68.95%    passed     85.72%
+  82  VMungo0251G2316   72.96%    passed     73.20%
+  83  VMungo0251G2387   75.68%    passed      7.37%
+  84  VMungo0331G0260   80.02%    passed      5.90%
+  85  VMungo0464G0607   66.56%    passed     29.20%
+  86  VMungo0464G2133   72.42%    passed     25.18%
+  87  VMungo0540G1225   69.60%    passed     82.60%
+  88  VMungo0647G0786   66.34%    passed     50.79%
+  89  VMungo0647G1561   66.23%    passed     90.70%
+  90  VMungo0647G2103   65.69%    passed     81.75%
+  91  VMungo0647G2276   65.91%    passed     51.89%
+  92  VMungo0647G2460   73.51%    passed     34.41%
+  93  VMungo0647G2509   65.58%    passed     32.54%
+  94  VMungo0720G2253   59.07%    failed      0.18%
+  95  VMungo1127G0296   66.34%    passed     20.74%
+  96  VMungo1127G0335   63.74%    failed      0.00%
+  97  VMungo1127G0813   61.78%    failed      0.14%
+  98  VMungo1127G1258   73.83%    passed     47.96%
+  99  VMungo1215G0167   75.57%    passed      7.62%
+ 100  VMungo1215G0547   70.14%    passed     26.27%
+ 101  VMungo1215G1788   65.36%    passed     34.64%
+ 102  VMungo1215G2144   68.51%    passed     38.56%
+ 103  VMungo1215G2172   70.14%    passed     46.70%
+ 104  VMungo1215G2683   73.72%    passed     27.84%
+ 105  VMungo1215G3138   67.21%    passed     43.84%
+ 106  VMungo1215G3212   72.53%    passed     20.45%
+ 107  VMungo1309G0497   63.41%    passed     90.59%
+ 108  VMungo1309G0632   66.88%    passed     66.90%
+ 109  VMungo1309G0875   78.28%    failed      0.00%
+ 110  VMungo1309G1426   82.63%    passed     51.44%
+ 111  VMungo1309G1447   82.08%    passed     72.52%
+ 112  VMungo1383G0044   73.62%    passed     46.73%
+ 113  VMungo1383G1547   73.40%    passed     52.22%
+WARNING: 113 sequences contain more than 50% gaps/ambiguity
+****  TOTAL             70.93%  17 sequences failed composition chi2 test (p-value<5%; df=19)
+NOTE: Glyma.10G061700 is identical to Glyma.10G060300 but kept for subsequent analysis
+
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 0.126 seconds
+NOTE: ModelFinder requires 131 MB RAM!
+ModelFinder will test 546 protein models (sample size: 921) ...
+ No. Model         -LnL         df  AIC          AICc         BIC
+  1  Dayhoff       33795.979    223 68037.958    68181.292    69114.036
+  2  Dayhoff+I     33788.202    224 68024.404    68169.231    69105.307
+  3  Dayhoff+G4    32562.597    224 65573.195    65718.022    66654.098
+  4  Dayhoff+I+G4  32562.716    225 65575.432    65721.763    66661.160
+  5  Dayhoff+R2    32812.768    225 66075.537    66221.868    67161.265
+  6  Dayhoff+R3    32614.049    227 65682.099    65831.467    66777.478
+  7  Dayhoff+R4    32549.359    229 65556.717    65709.163    66661.748
+  8  Dayhoff+R5    32528.455    231 65518.910    65674.475    66633.592
+  9  Dayhoff+R6    32525.230    233 65516.460    65675.185    66640.792
+ 14  Dayhoff+F     33966.485    242 68416.971    68590.440    69584.732
+ 15  Dayhoff+F+I   33954.996    243 68395.992    68571.153    69568.579
+ 16  Dayhoff+F+G4  32667.259    243 65820.517    65995.678    66993.104
+ 17  Dayhoff+F+I+G4 32667.325    244 65822.649    65999.513    67000.061
+ 18  Dayhoff+F+R2  32918.096    244 66324.192    66501.056    67501.604
+ 19  Dayhoff+F+R3  32720.473    246 65932.946    66113.248    67120.009
+ 20  Dayhoff+F+R4  32657.703    248 65811.407    65995.193    67008.121
+ 21  Dayhoff+F+R5  32634.273    250 65768.547    65955.860    66974.912
+ 22  Dayhoff+F+R6  32628.933    252 65761.866    65952.752    66977.882
+ 27  mtMAM         36842.817    223 74131.634    74274.968    75207.711
+ 28  mtMAM+I       36760.816    224 73969.632    74114.460    75050.535
+ 29  mtMAM+G4      34592.184    224 69632.368    69777.196    70713.271
+ 30  mtMAM+I+G4    34586.534    225 69623.068    69769.399    70708.796
+ 31  mtMAM+R2      35004.821    225 70459.641    70605.972    71545.370
+ 32  mtMAM+R3      34679.022    227 69812.044    69961.412    70907.424
+ 33  mtMAM+R4      34588.211    229 69634.422    69786.868    70739.452
+ 34  mtMAM+R5      34555.086    231 69572.171    69727.736    70686.852
