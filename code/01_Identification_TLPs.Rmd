@@ -50,7 +50,7 @@ Defining functions that we will use throughout this analysis.
 
 ## GmPR-5 gene identification
 
-**Uniprot search**: name:"pathogenesis-related protein 1" AND reviewed:yes AND organism:"Arabidopsis thaliana (Mouse-ear cress) [3702]"
+**Uniprot search**: name:"pathogenesis-related protein 5" AND reviewed:yes AND organism:"Arabidopsis thaliana (Mouse-ear cress) [3702]"
 *Results*: P28493 (At1g75040).
 
 **Protein domains** associated with this family: PF00314 (PFAM) and SM00205 (SMART).
@@ -101,7 +101,7 @@ pr5_putative_s2 <- find_domains(ids=pr5_putative_s1, annotation=plaza_annotation
 nrow(pr5_putative_s2)
 ```
 
-Based on the BLAST results, there are `r length(pr5_putative_s1)` PR-1 genes in soybean, of which `r nrow(pr5_putative_s2)` were confirmed based on protein domains.
+Based on the BLAST results, there are `r length(pr5_putative_s1)` PR-5 genes in soybean, of which `r nrow(pr5_putative_s2)` were confirmed based on protein domains.
 
 Finally, we need to export data to the appropriate directory.
 
