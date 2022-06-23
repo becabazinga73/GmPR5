@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo=TRUE,
 
 ## Overview
 
-Our goal here is to identify PR-1 genes in soybean. For that, we will use:
+Our goal here is to identify PR-5 genes in soybean. For that, we will use:
 1. BLAST searches of *Arabidopsis thaliana*'s curated protein sequences against *G. max*'s proteome;
 2. Selecting matches < 1e-10;
 3. Searching for conserved protein domain for each family for validation.
@@ -48,7 +48,7 @@ names(plaza_annotation_interpro)
 Defining functions that we will use throughout this analysis.
 
 
-## GmPR-1 gene identification
+## GmPR-5 gene identification
 
 **Uniprot search**: name:"pathogenesis-related protein 1" AND reviewed:yes AND organism:"Arabidopsis thaliana (Mouse-ear cress) [3702]"
 *Results*: P28493 (At1g75040).
