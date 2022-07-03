@@ -1,0 +1,101 @@
+library(tidyverse)
+library(here)
+ids <- read.csv(here("products", "tables", "table1.txt"))[, c(1,2)]
+ids <- ids %>%
+  mutate(name = paste0(Gene_name, Gene_ID)) %>%
+  mutate(name = str_replace(name, "Glyma\\.", "|"))
+library(ggtree)
+library(ggplot2)
+tree_outgroup <- treeio::read.newick(here("products", "result_files", 
+                                          "gmpr5_tree", "gmpr5.treefile"))
+# See raw tree just to get node names for grouping
+ggtree(tree_outgroup) + 
+  geom_text2(aes(subset=!isTip, label=node), hjust=-.3) + 
+  geom_tiplab()
+
+# Create groups to annotate tree
+groupInfo <- c(Cluster1 = 1, Cluster2 = 39)
+tree <- groupClade(tree_outgroup, groupInfo)
+
+# Change names to plot
+tree$tip.label[tree$tip.label %in% ids$Gene_ID] <- ids$name[
+  ids$Gene_ID %in% tree$tip.label]
+
+# Plot tree with colors taking branch length into account
+phylotree1 <- ggtree(tree, aes(color=group),branch.length = 0.05) + 
+    geom_tiplab(align = TRUE) + 
+    xlim(0, 6) + 
+    geom_text2(aes(label=label, subset = !(is.na(as.numeric(label)))),
+               size=3, hjust=1.2, vjust=-0.5) +
+  scale_color_manual(values = c("black", "steelblue", "darkgreen")) +
+  geom_treescale(x=0, y=23) +
+  theme_tree2(legend.position="none")
+# Option 2: not considering branch length
+phylotree2 <- ggtree(tree, aes(color=group),branch.length = "none") + 
+    geom_tiplab(align = TRUE) + 
+  xlim(0, 12) +
+    geom_text2(aes(label=label, subset = !(is.na(as.numeric(label)))),
+               size=3, hjust=1.2, vjust=-0.5) +
+  scale_color_manual(values = c("black", "steelblue", "darkgreen")) +
+  theme_tree(legend.position="none")
+phylotree1
+phylotree2
+# Create a vector of gene order to relevel factors in further plots (for plot alignment)
+gene_order_tree <- rev(get_taxa_name(phylotree1))
+save(gene_order_tree, 
+     file = here("products", "result_files", "tree_clusters.rda"),
+     compress="xz")
+     
+     
+     
+     ## Gene structures (exon-intron boundaries)
+
+
+# The .gff file was downloaded from PLAZA 5.0 Dicots.
+
+library(GenomicRanges)
+library(gggenes)
+gff <- rtracklayer::import(here("data", "PLAZA_selected.transcripts.gff.gz"))
+seqs_pr5 <- Biostrings::readAAStringSet(
+  here("products", "result_files", "pr5_nostopcodon.fa")
+)
+# Genes
+gene.str.genes <- as.data.frame(gff[gff$gene_id %in% names(seqs_pr5) & gff$type == "gene"])
+gene.str.genes$start <- 1
+gene.str.genes$end <- gene.str.genes$width
+# Add empty ranges for the outgroup
+V.mungo <- gene.str.genes[1,]
+V.mungo$start <- 1
+V.mungo$end <- 1
+V.mungo$Name <- "Vmungo"
+# Exons
+gene.str.exons <- as.data.frame(gff[gff$type == "exon" & gff$gene_id %in% names(seqs_pr5)])
+gene.str.exons$ID <- gsub(".*exon:", "", gene.str.exons$ID)
+gene.str.exonlist <- split(gene.str.exons, gene.str.exons$Name)
+gene.str.exons <- Reduce(rbind, lapply(gene.str.exonlist, function(x) {
+  start <- x[1,2] - 1
+  x$start <- x$start - start
+  x$end <- x$end - start
+  return(x)
+}))
+# Wrangle gene names
+gene.str.exons <- left_join(gene.str.exons, ids, by = c("Name" = "Gene_ID"))
+gene.str.exons$Name <- gene.str.exons$name
+gene_str_plotdata <- rbind(gene.str.genes, V.mungo)
+gene_str_plotdata$Name[gene_str_plotdata$Name %in% ids$Gene_ID] <- ids$name[
+  ids$Gene_ID %in% gene_str_plotdata$Name
+] 
+gene_str_plotdata$Name <- forcats::fct_relevel(gene_str_plotdata$Name,
+                                               gene_order_tree)
+gene_structure <- ggplot(gene_str_plotdata,
+       aes(xmin = start, xmax = end, y = Name)) +
+  geom_gene_arrow(arrowhead_height = unit(3, "mm"), arrowhead_width = unit(0, "mm")) +
+    geom_subgene_arrow(
+    data = gene.str.exons,
+    aes(xsubmin = start, xsubmax = end, fill = ID),
+    arrowhead_height = unit(3, "mm"), arrowhead_width = unit(0, "mm")
+    ) +
+  scale_fill_manual(values = ggsci::pal_d3("category10")(5)) + 
+  scale_x_continuous(expand=c(0,0)) +
+  theme_tree2(legend.position="none")
+gene_structure
