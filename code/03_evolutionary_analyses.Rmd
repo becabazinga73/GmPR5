@@ -1,0 +1,591 @@
+---
+title: "Evolutionary analyses of GmTLP genes"
+author: "Rebeca de Souza Brinco"
+date: '2022-06-21'
+output: html_document
+---
+
+
+## Phylogenetic reconstruction of GmTLPs genes across species
+
+```{r}
+set.seed(123) # for reproducibility
+library(here)
+```
+
+```{r}
+library(tidyverse)
+ids <- read.csv(here("products", "tables", "table1.txt"))[, c(1,2)]
+ids <- ids %>%
+  mutate(name = paste0(Gene_name, Gene_ID)) %>%
+  mutate(name = str_replace(name, "Glyma\\.", "|"))
+```
+
+Sequences of three differents species (Glycine max, Vigna mungo e Arabidopsis thaliana) were aligned with MAFFT in PLAZA's Interactive Phylogenetic Module. Inferring the phylogeny with IQTREE2:
+
+```{bash}
+mkdir -p ../products/result_files/cross_species_phylotree 
+cd ../products/result_files/cross_species_phylotree
+iqtree2 -s /home/rebeca/Desktop/Projeto_PR-5/cross_species_muscle.fasta -B 1000 --prefix cross_species --redo-tree
+```
+
+```{r}
+library(ggtree)
+library(ggplot2)
+tree <- treeio::read.newick(
+    here("products", "result_files", 
+         "cross_species_phylotree", "cross_species.treefile")
+    ) 
+ggtree(tree, layout = "circular", open.angle = 10) + 
+    geom_text2(aes(subset=!isTip, label=node), hjust=-.9, check_overlap = TRUE) + 
+    geom_tiplab(align = TRUE)
+
+# Create groups to annotate tree
+groupInfo <- c(Cluster1 = 120, 
+               Cluster2 = 131, 
+               Cluster3 = 133,
+               Cluster4 = 162,
+               Cluster5 = 184,
+               Cluster6 = 192,
+               Cluster7 = 199,
+               Cluster8 = 208,
+               Cluster9 = 216)
+tree <- groupClade(tree, groupInfo)
+# Change names to plot
+tree$tip.label[tree$tip.label %in% ids$Gene_ID] <- ids$Gene_name[ids$Gene_ID %in% tree$tip.label]
+# Create species legend
+species <- data.frame(label=tree$tip.label,
+                      stringsAsFactors = FALSE)
+species$species <- apply(species, 1, function(x) {
+  if(startsWith(x, "AT")) {
+    y <- "A. thaliana"
+  } else if(startsWith(x, "Gm")) {
+    y <- "G. max"
+    } else {
+      y <- "V. mungo"
+      }
+  return(y)
+})
+# Plot circular tree
+phylotree <- ggtree(tree, aes(color=group), open.angle = 10,
+                    layout="circular") %<+% species + 
+  geom_tiplab(align = TRUE, size=3, offset=0.1) +
+  geom_text2(aes(label=label, 
+                 subset = as.numeric(label) > 80, color=group),            
+             size=1.8, hjust = -0.2, vjust = -0.2) +
+  scale_color_manual(name="Group",
+                     breaks = c("Cluster1", "Cluster2", "Cluster3", "Cluster4", "Cluster5", "Cluster6", "Cluster7", "Cluster8", "Cluster9"),
+                     values = c("black", "steelblue", "darkgreen", "brown2", "coral3", "darkorange", "chocolate4", "darkred", "aquamarine4", "darkorchid")) +
+  guides(line="none") +
+  ggnewscale::new_scale_color() +
+  geom_tippoint(aes(color=species), show.legend = TRUE, size = 0.5) +
+  scale_color_manual(name="Species", 
+                     values = c("#800000FF", "#767676FF", "#FFA319FF")) +
+  theme_tree() +
+  xlim(0, NA) +
+  theme(
+    plot.margin=margin(2, 2, 2, -1,"cm"),
+    legend.position=c(1.28, 0.5), # the position of legend.
+    legend.background=element_rect(fill=NA), # the background of legend.
+    legend.title=element_text(size=11), # the title size of legend.
+    legend.text=element_text(size=9) # the text size of legend.
+    )
+phylotree
+ggsave(plot=phylotree, 
+       filename = here("products", "plots", "cross_species_tree.pdf"), 
+       width = 11, height = 6)
+```
+
+
+
+## Phylogenetic reconstruction of GmTLPs genes
+
+```{bash}
+# Bash
+--redo-tree
+mkdir -p ../products/result_files/GmTLP_tree
+cd ../products/result_files/GmTLP_tree
+iqtree2 -s /home/rebeca/Desktop/Projeto_PR-5/pr5_mafft_with_outgroup.fasta -B 1000 -o Vmungo --prefix GmTLP --redo-tree
+```
+
+```{r}
+library(tidyverse)
+library(here)
+ids <- read.csv(here("products", "tables", "table1.txt"))[, c(1,2)]
+ids <- ids %>%
+  mutate(name = paste0(Gene_name, Gene_ID)) %>%
+  mutate(name = str_replace(name, "Glyma\\.", "|"))
+library(ggtree)
+library(ggplot2)
+library(RColorBrewer)
+tree_outgroup <- treeio::read.newick(here("products", "result_files", 
+                                          "GmTLP_tree", "GmTLP.treefile"))
+# See raw tree just to get node names for grouping
+ggtree <- ggtree(tree_outgroup) + 
+  geom_text2(aes(subset=!isTip, label=node), hjust=-.3) + 
+  geom_tiplab()
+
+# Create groups to annotate tree
+groupInfo <- c(Cluster1 = 89, Cluster2 = 85, Cluster3 = 95, Cluster4 = 99, Cluster5 = 105, Cluster6 = 64, Cluster7 = 71, Cluster8 = 74, Cluster9 = 77, Cluster10 = 76, Cluster11 = 108, Cluster12 = 110, Cluster13 = 58)
+tree <- groupClade(tree_outgroup, groupInfo)
+
+# Change names to plot
+tree$tip.label[tree$tip.label %in% ids$Gene_ID] <- ids$name[
+  ids$Gene_ID %in% tree$tip.label]
+
+# Plot tree with colors taking branch length into account
+my.cols <- brewer.pal(12, "Paired")
+my.cols[1] <- "#000000"
+phylotree1 <- ggtree(tree, aes(color=group),branch.length = 0.05, fontface = "bold") + 
+    geom_tiplab(align = TRUE) + 
+    xlim(0, 6) + 
+    geom_text2(aes(label=label, subset = !(is.na(as.numeric(label)))),
+               size=3, hjust=1.2, vjust=-0.5) +
+ scale_color_manual(values = c("black", "orangered", "orchid", "palegreen4", "palegreen3", "paleturquoise4", "palevioletred4", "saddlebrown", "paleturquoise4", "rosybrown4", "plum3", "palevioletred3", "gray29", "royalblue3")) +
+  geom_treescale(x=0, y=23) +
+  theme_tree2(legend.position="none") 
+# Option 2: not considering branch length
+phylotree2 <- ggtree(tree, aes(color=group),branch.length = "none") + 
+    geom_tiplab(align = TRUE) + 
+  xlim(0, 12) +
+    geom_text2(aes(label=label, subset = !(is.na(as.numeric(label)))),
+               size=3, hjust=1.2, vjust=-0.5) +
+scale_color_manual(values = c("black", "orangered", "orchid", "palegreen4", "palegreen3", "paleturquoise4", "palevioletred4", "saddlebrown", "paleturquoise4", "rosybrown4", "plum3", "palevioletred3", "gray29", "royalblue3")) +
+  theme_tree(legend.position="none") 
+phylotree1
+phylotree2
+# Create a vector of gene order to relevel factors in further plots (for plot alignment)
+gene_order_tree <- rev(get_taxa_name(phylotree1))
+save(gene_order_tree, 
+     file = here("products", "result_files", "tree_clusters.rda"),
+     compress="xz")
+```
+
+
+## Gene structures (exon-intron boundaries)
+The .gff file was downloaded from PLAZA 5.0 Dicots.
+
+```{r}
+
+library(GenomicRanges)
+library(gggenes)
+gff <- rtracklayer::import(here("data", "PLAZA_selected.transcripts.gff.gz"))
+seqs_pr5 <- Biostrings::readAAStringSet(
+  here("products", "result_files", "pr5_nostopcodon.fa")
+)
+# Genes
+gene.str.genes <- as.data.frame(gff[gff$gene_id %in% names(seqs_pr5) & gff$type == "gene"])
+gene.str.genes$start <- 1
+gene.str.genes$end <- gene.str.genes$width
+# Add empty ranges for the outgroup
+v.mungo <- gene.str.genes[1,]
+v.mungo$start <- 1
+v.mungo$end <- 1
+v.mungo$Name <- "Vmungo"
+# Exons
+gene.str.exons <- as.data.frame(gff[gff$type == "exon" & gff$gene_id %in% names(seqs_pr5)])
+gene.str.exons$ID <- gsub(".*exon:", "", gene.str.exons$ID)
+gene.str.exonlist <- split(gene.str.exons, gene.str.exons$Name)
+gene.str.exons <- Reduce(rbind, lapply(gene.str.exonlist, function(x) {
+  start <- x[1,2] - 1
+  x$start <- x$start - start
+  x$end <- x$end - start
+  return(x)
+}))
+# Wrangle gene names
+gene.str.exons <- left_join(gene.str.exons, ids, by = c("Name" = "Gene_ID"))
+gene.str.exons$Name <- gene.str.exons$name
+gene_str_plotdata <- rbind(gene.str.genes, v.mungo)
+gene_str_plotdata$Name[gene_str_plotdata$Name %in% ids$Gene_ID] <- ids$name[
+  ids$Gene_ID %in% gene_str_plotdata$Name
+] 
+gene_str_plotdata$Name <- forcats::fct_relevel(gene_str_plotdata$Name,
+                                               gene_order_tree)
+gene_structure <- ggplot(gene_str_plotdata,
+       aes(xmin = start, xmax = end, y = Name)) +
+  geom_gene_arrow(arrowhead_height = unit(3, "mm"), arrowhead_width = unit(0, "mm")) +
+    geom_subgene_arrow(
+    data = gene.str.exons,
+    aes(xsubmin = start, xsubmax = end, fill = ID),
+    arrowhead_height = unit(3, "mm"), arrowhead_width = unit(0, "mm")
+    ) +
+  scale_fill_manual(values = ggsci::pal_d3("category10")(5)) + 
+  scale_x_continuous(expand=c(0,0)) +
+  theme_tree2(legend.position="none") 
+gene_structure
+```
+
+## De novo motif discovery
+
+We will identify motifs using the MEME algorithm implemented in the package *universalmotif*.
+
+```{r}
+library(universalmotif)
+library(ggplot2)
+
+library(here)
+library(tidyverse)
+options(meme.bin = "/home/rebeca/meme/bin/meme")
+source(here("code", "functions.R"))
+dir.create(here("products", "result_files", "MEME_motif"))
+meme <- run_meme(target.sequences = seqs_pr5, nmotifs=20, minw=6, maxw=50,
+                 output=here("products", "result_files", 
+                             "MEME_motif", "motifs"), 
+                 overwrite.dir = TRUE)
+
+# Create ranges to plot
+motif.ranges.v.mungo <- data.frame(start=v.mungo$start,
+                           end=v.mungo$end, 
+                           gene_id=v.mungo$Name,
+                           Motif_name='ABC')
+motif.ranges <- meme2ranges(meme)
+names(motif.ranges) <- c("start", "end", "gene_id", "Motif_name")
+motif_structure_plotdata <- motif.ranges %>%
+  left_join(ids, by = c("gene_id" = "Gene_ID")) %>%
+  mutate(gene_id = name) %>%
+  select(start, end, gene_id, Motif_name) %>%
+  rbind(., motif.ranges.v.mungo)
+motif_structure_plotdata$gene_id <- forcats::fct_relevel(
+  motif_structure_plotdata$gene_id, gene_order_tree
+)
+motif_structure <- ggplot(motif_structure_plotdata,
+       aes(xmin = start, xmax = end, y = gene_id)) +
+  geom_gene_arrow(arrowhead_height = unit(3, "mm"), arrowhead_width = unit(1, "mm")) +
+    geom_subgene_arrow(
+    data = motif_structure_plotdata,
+    aes(xsubmin = start, xsubmax = end, fill = Motif_name),
+    show.legend = FALSE,
+    arrowhead_height = unit(3, "mm"), arrowhead_width = unit(0, "mm")
+    ) +
+  scale_fill_manual(values = c("lightpink4", "lightskyblue4", "lightslateblue", "lightsteelblue4", "limegreen", "magenta", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumorchid4", "mediumpurple3", "mediumseagreen", "mediumvioletred", "midnightblue", "olivedrab", "orange4", "lightcoral", "darkorange1", "deepskyblue2", "firebrick", "goldenrod4")) + 
+  scale_x_continuous(expand=c(0,0)) +
+  theme_tree2() 
+motif_structure
+
+```
+
+
+All in one: combining phylogenetic tree, gene structure and motifs
+
+```{r}
+library(ggpubr)
+final_tree <- ggarrange(phylotree1, gene_structure, motif_structure, ncol=3)
+```
+
+
+## Identification of cis-regulatory elements
+
+Position weight matrices were downloaded from the PlantPAN 3.0 web server.
+
+```{r}
+library(universalmotif)
+library(BSgenome)
+library(here)
+library(tidyverse)
+options(timeout=200)
+genome <- Biostrings::readDNAStringSet("https://ftp.psb.ugent.be/pub/plaza/plaza_public_dicots_05/Genomes/gma.fasta.gz")
+pr5.granges <- gff[gff$gene_id %in% names(seqs_pr5) & gff$type == "gene"]
+
+# Load motifs
+
+motifs <- read_meme(
+  here("products", "result_files", 
+       "promoters", "PWM_Glycine_max.meme.txt"))
+
+# Load ID mapping
+
+mapping <- read.csv(
+  here("products", "result_files", 
+       "promoters", "ID_mapping_Glycine_max.txt"), sep="\t")
+mapping <- mapping[!is.na(mapping$TF_Locus), ]
+mapping$TF_Locus <- gsub("\\.[0-9]$", "", mapping$TF_Locus)
+
+  
+# Load TF mapping
+
+tf.fam <- readr::read_tsv("http://planttfdb.gao-lab.org/download/TF_list/Gma_TF_list.txt.gz")
+tf.fam <- as.data.frame(tf.fam)[,c(1,3)]
+tf.fam$TF_ID <- gsub("\\.[0-9]\\.p$", "", tf.fam$TF_ID)
+upstream <- 1000
+downstream <- 200
+threshold <- 0.9
+threshold.type <- "logodds"
+ranges <- pr5.granges
+motif.mapping <- mapping
+
+# Get promoter sequences (from -1000 bp to + 200 bp relative to the TSS)
+
+promoters <- GenomicRanges::promoters(ranges, upstream=upstream, downstream=downstream)
+promoters.seq <- Biostrings::getSeq(genome, promoters)
+names(promoters.seq) <- ranges$gene_id
+    
+writeXStringSet(
+  promoters.seq, 
+  filepath = here("products", "result_files", "promoters.fasta")
+  )
+    
+# Scanning sequences for cis-regulatory elements
+
+scan <- scan_sequences(motifs, promoters.seq, 
+                       threshold = threshold, 
+                       threshold.type = threshold.type,
+                       calc.pvals = TRUE)
+scan <- as.data.frame(scan)
+scan <- scan[scan$pvalue < 0.05, ]
+scan.list <- split(scan, scan$sequence)
+    
+# Add CREs to PR-5 genes
+
+scan.list.mapping <- lapply(scan.list, function(x) {
+  y <- merge(x, motif.mapping, by=1)
+  final <- merge(y, tf.fam, by.x="TF_Locus", by.y=1)
+  final <- final[!duplicated(final[,c(1,2,5,6)]), ]
+  return(final)
+})
+
+# Filter data to remove redundant matches
+
+scan.list2 <- lapply(scan.list.mapping, function(x) {
+  x <- x[order(x$TF_Locus, x$sequence, x$start), ]
+  difs <- abs(diff(x$start))
+  x$diff <- c(10, difs)
+  ind <- with(x, c(FALSE, TF_Locus[-1L] != TF_Locus[-length(TF_Locus)]) &
+                TF_Locus != 'NULL')
+  x$isnew <- ifelse(ind, 'Diff', 'Same')
+  x$isnew[1] <- "Diff"
+  y <- x[x$diff > 1 & x$isnew != "Same", ]
+  return(y)
+})
+
+
+
+unimotifout2freq <- function(list.mapping) {
+  # Create list of data frames with frequency of CRE
+  freq <- lapply(list.mapping, function(x) as.data.frame(table(x$Family)))
+  
+  # Replace column name 'Freq' with gene name
+  cre.freq2 <- lapply(1:length(freq), function(x) {
+    y <- freq[[x]]
+    names(y)[2] <- names(list.mapping)[x]
+    return(y)
+  })
+  
+  
+  # Reduce list to a data.frame with one column for each gene
+  final.cre <- Reduce(function(df1, df2) merge(df1, df2, by=1, all.x=TRUE), 
+                      cre.freq2)
+  rownames(final.cre) <- final.cre[,1]
+  final.cre[,1] <- NULL
+  final.cre[is.na(final.cre)] <- 0
+  return(t(final.cre))
+}
+
+
+unimotif.freq <- unimotifout2freq(scan.list2)
+rownames(unimotif.freq) <- ids$Gene_name[ids$Gene_ID %in% 
+                                           rownames(unimotif.freq)]
+# Display CRE number as a heatmap
+library(RColorBrewer)
+cre_heatmap <- pheatmap::pheatmap(t(unimotif.freq), 
+                                  display_numbers = t(unimotif.freq), 
+                                  fontsize_number = 7,
+                                  color = colorRampPalette(
+                                    brewer.pal(8, "Greens")
+                                    )(100),
+                                  scale="column", number_color = "grey20",
+                                  main="Cis-regulatory elements in GmTLPs promoters")
+```
+
+## Gene duplication analysis
+
+First of all, we will explore them on PLAZA inteqractive phylogenetics module. For that, we will click on *Analyze > Interactive phylogenetics module* and input a random GmPR-5 gene (e.g., Glyma.01G165400). Then, we will click on the gene family of the first hit in the results table (HOM05D000102). On the pie chart, we will click on Glycine max and, then, on *View genome-wide organization*. Based on that, we can see that:
+
+- 38 genes (69%) are block duplicates;
+- 10 genes (18%) are tandem duplicates.
+
+Finally, we can click on *View or download all genes*.
+
+
+Now, we can analyze Ka/Ks distribution per each mode of duplication. Soybean duplicate pairs and Ks, Ka and Ka/Ks values were downloaded from our recent work (**[Almeida-Silva et al., 2020](https://link.springer.com/article/10.1007/s00425-020-03499-8)**).
+
+```{r}
+library(universalmotif)
+library(BSgenome)
+library(here)
+library(tidyverse)
+pr5_genes <- names(seqs_pr5)
+# Load data frames of duplicate pairs
+dd <- read.csv(here("data", "duplicated_genes_kaks", "dd_kaks.txt"),
+               header=TRUE, sep="\t", skip=1)
+pd <- read.csv(here("data", "duplicated_genes_kaks", "pd_kaks.txt"),
+               header=TRUE, sep="\t", skip=1)
+td <- read.csv(here("data", "duplicated_genes_kaks", "td_kaks.txt"),
+               header=TRUE, sep="\t", skip=1)
+trd <- read.csv(here("data", "duplicated_genes_kaks", "trd_kaks.txt"),
+                header=TRUE, sep="\t", skip=1)
+wgd <- read.csv(here("data", "duplicated_genes_kaks", "wgd_kaks.txt"),
+                header=TRUE, sep="\t", skip=1)
+# Look for PR-5 genes in duplicate pairs
+get_pr5_dupes <- function(dupes, mode) {
+  result <- dupes[dupes[,1] %in% pr5_genes | dupes[,2] %in% pr5_genes, ]
+  result$mode <- mode
+  return(result)
+}
+dd.pr5 <- get_pr5_dupes(dd, "DD")
+pd.pr5 <- get_pr5_dupes(pd, "PD")
+td.pr5 <- get_pr5_dupes(td, "TD")
+trd.pr5 <- get_pr5_dupes(trd, "TRD")
+wgd.pr5 <- get_pr5_dupes(wgd, "WGD")
+all_pr5_dupes <- rbind(dd.pr5, pd.pr5, td.pr5, trd.pr5, wgd.pr5)
+colnames(all_pr5_dupes) <- c("Duplicate1", "Duplicate2", 
+                             "Ka", "Ks", "Ka.Ks",
+                             "Pvalue_Fisher", "mode")
+# Create data for Ka/Ks analyses
+kaks_data <- all_pr5_dupes[rowSums(is.na(all_pr5_dupes)) == 0, ]
+# Calculate median Ka/Ks per mode
+library(tidyverse)
+kaks_data %>%
+  group_by(mode) %>%
+  summarise(median=median(Ka.Ks))
+#----Export result as a table----
+dup_table <- all_pr5_dupes
+dup_table$Pvalue_Fisher <- NULL
+names(dup_table) <- c("Duplicate_1", "Duplicate_2",
+                      "Ka", "Ks", "Ka.Ks", "Mode")
+dup_table$Divergence_MYA <- dup_table$Ks / (2 * 6.1 * 1e-9) * 1e-6
+dup_table$Divergence_MYA <- round(dup_table$Divergence_MYA)
+dup_table
+readr::write_tsv(
+  dup_table, 
+  file = here("products", "tables", "selection_duplicated_genes.txt")
+)
+```
+
+Calculate mean distance between GmPR-5 that are clustered in the same chromosome (chromosomes 10, 11 and 14).
+
+```{r}
+# Subtract only GmPR-5 gene ranges from chromosomes 13 and 15
+clustered_pr5 <- gff[gff$type == "gene" & gff$Name %in% pr5_genes]
+clustered_pr5 <- clustered_pr5[seqnames(clustered_pr5) %in% c("Gm10", "Gm11", "Gm14")]
+  
+
+# Get start and end positions for GmPR-5 genes on Chr13 and Chr15
+pr5_chr10 <- clustered_pr5[seqnames(clustered_pr5) == "Gm10"]
+start(pr5_chr10) / 1000
+end(pr5_chr10) / 1000
+pr5_chr11 <- clustered_pr5[seqnames(clustered_pr5) == "Gm11"]
+start(pr5_chr11) / 1000
+end(pr5_chr11) / 1000
+pr5_chr14 <- clustered_pr5[seqnames(clustered_pr5) == "Gm14"]
+start(pr5_chr14) / 1000
+end(pr5_chr14) / 1000
+
+# calculate chr region
+chr10_region <- max(end(pr5_chr10) / 1000) - min(start(pr5_chr10) / 1000) 
+chr11_region <- max(end(pr5_chr11) / 1000) - min(start(pr5_chr11) / 1000) 
+chr14_region <- max(end(pr5_chr14) / 1000) - min(start(pr5_chr14) / 1000)
+
+# ordered genes to find tandem duplications
+
+
+sorted_ranges_chr10 <- sort(pr5_chr10)
+sorted_ranges_df_chr10 <- as.data.frame(sorted_ranges_chr10)
+library(dplyr)
+sorted_ranges_df_chr10 <- sorted_ranges_df_chr10 %>%
+  arrange(start)
+sorted_ranges_df_chr10$Order <- 1:length(sorted_ranges_chr10)
+
+
+distance_list_chr10 <- list(sorted_ranges_df_chr10)
+distance_genes_chr10 <- lapply(distance_list_chr10, function (x) {
+  y <- x$start[-1]
+  x <- y - x$end[-6]
+  return(x)
+})
+
+sorted_ranges_chr11 <- sort(pr5_chr11)
+sorted_ranges_df_chr11 <- as.data.frame(sorted_ranges_chr11)
+library(dplyr)
+sorted_ranges_df_chr11 <- sorted_ranges_df_chr11 %>%
+  arrange(start)
+sorted_ranges_df_chr11$Order <- 1:length(sorted_ranges_chr11)
+
+
+distance_list_chr11 <- list(sorted_ranges_df_chr11)
+distance_genes_chr11 <- lapply(distance_list_chr11, function (x) {
+  y <- x$start[-1]
+  x <- y - x$end[-7]
+  return(x)
+})
+
+sorted_ranges_chr14 <- sort(pr5_chr14)
+sorted_ranges_df_chr14 <- as.data.frame(sorted_ranges_chr14)
+library(dplyr)
+sorted_ranges_df_chr14 <- sorted_ranges_df_chr14 %>%
+  arrange(start)
+sorted_ranges_df_chr14$Order <- 1:length(sorted_ranges_chr14)
+
+
+distance_list_chr14 <- list(sorted_ranges_df_chr14)
+distance_genes_chr14 <- lapply(distance_list_chr14, function (x) {
+  y <- x$start[-1]
+  x <- y - x$end[-6]
+  return(x)
+})
+
+
+# Get median distance between GmPR-5 genes in Chr13 and Chr15 and their nearest neighbors
+neighbors <- nearest(pr5_chr10) 
+neighbor <- pr5_chr10[neighbors]
+median(distance(pr5_chr10, neighbor)) / 1000
+```
+
+
+Calculating some summary statistics about GmPR-5 duplicates.
+
+```{r}
+#----Summary statistics----
+# How many duplicate pairs are there for GmPR-5 genes?
+nrow(all_pr5_dupes)
+# How many individual GmPR-5 genes are duplicated?
+dup_vector <- unique(c(all_pr5_dupes[,1], all_pr5_dupes[,2]))
+sum(dup_vector %in% pr5_genes)
+# What is the frequency of modes of duplication?
+library(tidyverse)
+all_pr5_dupes %>%
+  janitor::tabyl(mode) %>%
+  arrange(-n)
+# What is the distribution of KaKs values like?
+library(ggpubr)
+kaks_violin <- ggviolin(kaks_data, x="mode", y="Ka.Ks",
+         orientation="horiz", 
+         xlab="Mode of duplication", ylab="Ka/Ks values",
+         fill="mode", palette="aaas",
+         add="boxplot",
+         add.params=list(fill="white"),
+         legend="none",
+         title="Ka/Ks values of GmTLPs duplicates",
+         font.main=c(13, "bold"), font.x=12, font.y=12, font.tickslab=11) +
+  theme(plot.title = element_text(hjust=0.5))
+kaks_violin
+```
+
+Combining all plots in a single figure:
+
+```{r}
+library(ggplotify)
+upper_part <- as.ggplot(final_tree)
+lower_part <- ggarrange(kaks_violin, as.ggplot(cre_heatmap), widths = c(1, 2.5))
+final_figure <- ggarrange(upper_part, 
+                          lower_part,
+                          nrow=2)
+ggsave(final_figure, 
+       filename = "fig2_tree_gene-motif-structure_cre_kaks.pdf", 
+       path=here("products", "plots"),
+       width=20, height=15)
+```
+
+
+
+
+
