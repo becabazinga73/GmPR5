@@ -257,7 +257,7 @@ cheatmap_abiotic <- pheatmap(as.matrix(abiotic_hm_plotdata),
                              fontsize_row = 8,
                              main="GmTLP response to abiotic stress")
 cheatmap_abiotic_ggplot <- ggplotify::as.ggplot(cheatmap_abiotic, scale=0.95)
-#----Plot heatmap of fold change in response to abiotic stress----
+#----Plot heatmap of fold change in response to biotic stress----
 cheatmap_biotic <- ComplexHeatmap::pheatmap(as.matrix(biotic_hm_plotdata), 
                                             annotation_col = metadata_biotic,
                                             annotation_colors = ann_colors_biotic,
