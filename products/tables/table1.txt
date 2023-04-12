@@ -1,0 +1,56 @@
+Gene_ID,Gene_name,Exon_no,Protein.length..aa.,pI,MW..kDa.,Hydrophobicity,SL,SP,Alpha_helix,Beta_sheet,Three_ten_helix,Pi_helix
+Glyma.01G165400,GmTLP1,3,318,5,33,0.015,anchored to membrane, Apoplast,0.000183,19,24,5,0
+Glyma.01G165600,GmTLP2,4,304,4.2,31,0.17,anchored to membrane, Apoplast,0.000141,17,25,3,0
+Glyma.01G165800,GmTLP3,3,323,8.1,34,0.27,anchored to membrane, Apoplast,2.2e-05,19,32,2,0
+Glyma.01G217600,GmTLP4,1,223,4.5,24,-0.049,Apoplast,0.000163,13,36,4,0
+Glyma.01G217700,GmTLP5,1,240,6.7,26,-0.28,Apoplast,0.000153,5,35,5,0
+Glyma.02G047400,GmTLP6,3,309,5.7,32,0.015,anchored to membrane, Apoplast,0.000152,22,25,5,0
+Glyma.02G220900,GmTLP7,3,313,5.8,34,0.0032,Apoplast,0.000149,16,26,4,0
+Glyma.02G249500,GmTLP8,3,246,8,26,0.15,Apoplast,0.000149,8,33,6,0
+Glyma.04G023700,GmTLP9,3,329,4.5,34,0.0036,Apoplast,0.000134,15,24,5,0
+Glyma.04G034300,GmTLP10,2,154,4.1,16,0.0078,Apoplast,0,6,29,7,0
+Glyma.04G176200,GmTLP11,3,305,8,33,0.15,Apoplast,0.000189,4,28,4,0
+Glyma.04G225800,GmTLP12,3,207,7.5,23,-0.32,Apoplast,0,6,19,4,0
+Glyma.05G169700,GmTLP13,3,287,7.3,31,-0.084,Apoplast,0.000131,14,32,4,0
+Glyma.05G204600,GmTLP14,1,224,5.2,24,-0.21,Apoplast,0.00017,8,35,3,0
+Glyma.05G204800,GmTLP15,1,222,7.9,24,-0.26,Apoplast,0.000165,8,37,3,0
+Glyma.05G245800,GmTLP16,1,245,9,26,-0.023,Apoplast,0.00016,6,30,6,0
+Glyma.06G023900,GmTLP17,3,328,4.8,34,-0.01,Apoplast,0.000138,16,24,4,0
+Glyma.06G139000,GmTLP18,5,245,8,26,-0.27,Apoplast,0.000535,5,31,4,0
+Glyma.06G189100,GmTLP19,3,321,8.6,35,-0.058,Apoplast,0.000174,31,25,3,0
+Glyma.07G135100,GmTLP20,2,245,7.2,26,0.11,Apoplast,0.000147,6,35,5,0
+Glyma.08G053600,GmTLP21,1,253,9.1,27,-0.0063,Apoplast,0.000145,6,29,5,0
+Glyma.08G128000,GmTLP22,3,289,6.9,31,-0.11,Apoplast,0.000141,5,31,3,0
+Glyma.08G172700,GmTLP23,2,179,6.2,19,-0.072,anchored to membrane, Apoplast,0,6,38,6,0
+Glyma.09G003600,GmTLP24,2,166,7.7,18,-0.27,Apoplast,0,8,34,8,0
+Glyma.10G060300,GmTLP25,2,243,3.5,26,-0.21,anchored to membrane, Apoplast,0.000165,6,28,2,0
+Glyma.10G060800,GmTLP26,3,263,4.4,28,-0.33,anchored to membrane, Apoplast,0.000188,5,31,3,0
+Glyma.10G061000,GmTLP27,2,242,4.3,26,-0.25,anchored to membrane, Apoplast,0.000158,6,33,5,0
+Glyma.10G061700,GmTLP28,2,243,3.5,26,-0.21,anchored to membrane, Apoplast,0.000165,6,28,2,0
+Glyma.10G061800,GmTLP29,2,261,4.5,28,-0.32,anchored to membrane, Apoplast,0.000187,5,31,3,0
+Glyma.10G062100,GmTLP30,4,240,4.3,26,-0.22,anchored to membrane, Apoplast,0.000156,6,32,1,0
+Glyma.11G025600,GmTLP31,1,224,4.4,24,-0.0049,Apoplast,0.000162,9,38,3,0
+Glyma.11G077700,GmTLP32,3,304,4.4,31,0.15,anchored to membrane, Apoplast,0.000146,17,25,3,0
+Glyma.11G077800,GmTLP33,3,316,5.3,33,-0.019,anchored to membrane, Apoplast,0.000138,20,22,5,0
+Glyma.11G106100,GmTLP34,5,287,8.4,31,0.026,Apoplast,0.000146,20,24,5,0
+Glyma.11G106200,GmTLP35,2,132,4.3,13,-0.047,anchored to membrane, Apoplast,0,12,13,3,0
+Glyma.11G140800,GmTLP36,1,248,7.6,26,0.094,Apoplast, plant-type cell wall, plasmodesma,0.000155,6,32,6,0
+Glyma.11G220700,GmTLP37,3,251,7.5,26,0.12,Apoplast,0.00015,6,37,4,0
+Glyma.12G031000,GmTLP38,3,312,8.3,33,0.14,Apoplast,0.000145,13,24,4,0
+Glyma.12G031200,GmTLP39,3,346,4,35,0.031,anchored to membrane, Apoplast,0.000151,14,21,5,0
+Glyma.12G064300,GmTLP40,1,248,7.9,26,0.071,Apoplast, plant-type cell wall, plasmodesma,0.000158,6,32,6,0
+Glyma.12G238900,GmTLP41,2,236,7.8,25,-0.12,Apoplast,0.000168,6,33,6,0
+Glyma.13G082700,GmTLP42,4,287,8.2,31,-0.062,Apoplast,0.000135,20,28,3,0
+Glyma.14G077267,GmTLP43,2,246,5.6,25,0.059,Apoplast,0.00016,11,32,5,0
+Glyma.14G077333,GmTLP44,2,250,4.9,25,0.094,Apoplast,0.000454,10,32,6,0
+Glyma.14G077400,GmTLP45,2,251,6.3,26,0.11,Apoplast,0.000236,6,30,5,0
+Glyma.14G163700,GmTLP46,4,287,8.2,31,0.0021,Apoplast,0.000137,19,28,4,0
+Glyma.14G188400,GmTLP47,4,281,6.4,30,-0.18,Apoplast,0.000152,15,25,6,0
+Glyma.14G219600,GmTLP48,3,318,4.5,33,0.06,Apoplast,0.000307,20,24,5,0
+Glyma.15G254700,GmTLP49,2,246,5.2,26,-0.091,anchored to membrane, Apoplast,0.000155,6,37,4,0
+Glyma.16G126900,GmTLP50,3,306,4.9,32,-0.068,anchored to membrane, Apoplast,0.000151,24,25,5,0
+Glyma.16G127100,GmTLP51,3,299,6.7,31,0.15,anchored to membrane, Apoplast,0.000221,17,26,5,0
+Glyma.17G248300,GmTLP52,2,248,4.7,25,0.11,Apoplast,0.000146,10,31,5,0
+Glyma.17G258500,GmTLP53,3,315,4.4,33,0.054,Apoplast,0.000459,17,25,5,0
+Glyma.17G258600,GmTLP54,3,314,4.5,33,-0.07,Apoplast,0.000143,18,22,4,0
+Glyma.19G018400,GmTLP55,2,261,7.6,28,-0.11,Apoplast,0.000145,8,26,6,0
